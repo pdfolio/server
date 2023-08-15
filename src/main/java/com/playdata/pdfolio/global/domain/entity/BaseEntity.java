@@ -1,6 +1,8 @@
 package com.playdata.pdfolio.global.domain.entity;
 
 
+import com.playdata.pdfolio.global.exception.CommonException;
+import com.playdata.pdfolio.global.exception.CommonExceptionMessage;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -23,7 +25,7 @@ public abstract class BaseEntity {
     private Boolean isDeleted=false;
     public void deleteColumn(){
         if(isDeleted){
-            throw new RuntimeException("이미 삭제된 컬럼");
+            throw new CommonException(CommonExceptionMessage.COLUMN_ALREADY_DELETED);
         }
         this.deletedAt = LocalDateTime.now();
         this.isDeleted = true;

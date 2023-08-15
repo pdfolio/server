@@ -1,5 +1,7 @@
 package com.playdata.pdfolio.global.domain.entity;
 
+import com.playdata.pdfolio.global.exception.CommonException;
+import com.playdata.pdfolio.global.exception.CommonExceptionMessage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +26,11 @@ class BaseEntityTest {
         //given
         BaseEntity baseEntity = new BaseEntity() {};
         baseEntity.deleteColumn();
-        //when
-        assertThrows(RuntimeException.class, baseEntity::deleteColumn, "이미 삭제된 컬럼");
-        //then
+
+        //when, then
+        assertThrows(
+                CommonException.class,
+                baseEntity::deleteColumn,
+                CommonExceptionMessage.COLUMN_ALREADY_DELETED.name());
     }
 }
