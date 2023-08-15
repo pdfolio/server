@@ -6,11 +6,20 @@ public enum Skill {
     JAVA(SkillCategory.LANGUAGE),
     KOTLIN(SkillCategory.LANGUAGE),
     JAVASCRIPT(SkillCategory.LANGUAGE),
+    TYPESCRIPT(SkillCategory.LANGUAGE),
+    PYTHON(SkillCategory.LANGUAGE),
+    PHP(SkillCategory.LANGUAGE),
 
     // Framework
     SPRING(SkillCategory.FRAMEWORK),
     NEST(SkillCategory.FRAMEWORK),
     EXPRESS(SkillCategory.FRAMEWORK),
+    DJANGO(SkillCategory.FRAMEWORK),
+    LARAVEL(SkillCategory.FRAMEWORK),
+    REACT(SkillCategory.FRAMEWORK),
+    VUE(SkillCategory.FRAMEWORK),
+    NEXT(SkillCategory.FRAMEWORK),
+    NUXT(SkillCategory.FRAMEWORK),
 
 
     // Database
