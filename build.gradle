@@ -18,18 +18,54 @@ java {
     sourceCompatibility = '17'
 }
 
+
 jacoco {
     toolVersion = "0.8.9"
     reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
 }
 
+// jacocoTestReport 생성
 jacocoTestReport {
+
     reports {
         xml.required = false
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
+
+    // QueryDsl QEntity 제외
+    def Qdomains = []
+    for(qPattern in "**/QA" .. "**/QZ"){
+        Qdomains.add(qPattern+"*")
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [] + Qdomains)
+        }))
+    }
+
+    finalizedBy 'jacocoTestCoverageVerification'
+
 }
+
+// Test Coverage 설정
+jacocoTestCoverageVerification {
+
+    // QueryDsl QEntity 제외
+    def Qdomains = []
+
+    for (qPattern in '*.QA'..'*.QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+    violationRules {
+        rule {
+            excludes = [] + Qdomains
+        }
+    }
+}
+
 
 
 configurations {
@@ -61,8 +97,10 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
 }
 
+// querydsl 설정
 def querydslDir = "$buildDir/generated/querydsl"
 tasks.withType(JavaCompile).configureEach {
     options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
