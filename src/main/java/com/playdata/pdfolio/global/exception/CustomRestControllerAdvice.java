@@ -1,16 +1,16 @@
 package com.playdata.pdfolio.global.exception;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class CustomRestControllerAdvice {
 
-    @ExceptionHandler(CommonException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionResponse CommonExceptionHandler(CommonException e){
-        return ExceptionResponse.from(e);
+    @ExceptionHandler(PdFolioException.class)
+    public ResponseEntity<ExceptionResponse> PdFolioExceptionHandler(PdFolioException e){
+        return ResponseEntity
+                .status(e.getHttpStatus())
+                .body(ExceptionResponse.from(e));
     }
 }

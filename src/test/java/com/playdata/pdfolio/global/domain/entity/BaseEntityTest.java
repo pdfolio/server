@@ -1,8 +1,8 @@
 package com.playdata.pdfolio.global.domain.entity;
 
-import com.playdata.pdfolio.global.exception.CommonException;
-import com.playdata.pdfolio.global.exception.CommonExceptionMessage;
-import org.assertj.core.api.Assertions;
+import com.playdata.pdfolio.global.exception.ColumnAlreadyDeletedException;
+import com.playdata.pdfolio.global.exception.PdFolioException;
+import com.playdata.pdfolio.global.exception.ExceptionType;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,8 +29,9 @@ class BaseEntityTest {
 
         //when, then
         assertThrows(
-                CommonException.class,
+                ColumnAlreadyDeletedException.class,
                 baseEntity::deleteColumn,
-                CommonExceptionMessage.COLUMN_ALREADY_DELETED.name());
+                ExceptionType.COLUMN_ALREADY_DELETED.getMessage()
+        );
     }
 }

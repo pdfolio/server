@@ -1,10 +1,8 @@
 package com.playdata.pdfolio.global.exception;
 
-import lombok.AllArgsConstructor;
-
 public record ExceptionResponse(String message) {
 
-    public static ExceptionResponse from(RuntimeException e){
+    public static ExceptionResponse from(PdFolioException e){
         return new ExceptionResponse(e.getMessage());
     }
 }
