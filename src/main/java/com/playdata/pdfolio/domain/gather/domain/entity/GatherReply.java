@@ -1,4 +1,4 @@
-package com.playdata.pdfolio.domain.gather.domain;
+package com.playdata.pdfolio.domain.gather.domain.entity;
 
 import com.playdata.pdfolio.domain.member.domain.entity.Member;
 import com.playdata.pdfolio.global.domain.entity.BaseEntity;

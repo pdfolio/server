@@ -1,8 +1,7 @@
 package com.playdata.pdfolio.domain.heart.domain.entity;
 
-import com.playdata.pdfolio.domain.gather.domain.Gather;
+import com.playdata.pdfolio.domain.gather.domain.entity.Gather;
 import com.playdata.pdfolio.domain.member.domain.entity.Member;
-import com.playdata.pdfolio.domain.project.domain.entity.Project;
 import jakarta.persistence.*;
 import lombok.*;
 
