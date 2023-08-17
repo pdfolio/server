@@ -1,7 +1,7 @@
-package com.playdata.pdfolio.domain.gather.domain.entity;
+package com.playdata.pdfolio.domain.entity.heart;
 
-import com.playdata.pdfolio.domain.member.domain.entity.Member;
-import com.playdata.pdfolio.global.domain.entity.BaseEntity;
+import com.playdata.pdfolio.domain.entity.member.Member;
+import com.playdata.pdfolio.domain.entity.project.Project;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,12 +10,12 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
-public class GatherReply extends BaseEntity {
+public class ProjectHeart {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     private Member member;
     @ManyToOne
-    private GatherComment comment;
+    private Project project;
 }

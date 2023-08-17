@@ -1,4 +1,4 @@
-package com.playdata.pdfolio.global.domain.entity;
+package com.playdata.pdfolio.domain.entity.common;
 
 public enum Skill {
 

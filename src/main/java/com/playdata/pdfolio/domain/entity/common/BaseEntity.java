@@ -1,9 +1,7 @@
-package com.playdata.pdfolio.global.domain.entity;
+package com.playdata.pdfolio.domain.entity.common;
 
 
 import com.playdata.pdfolio.global.exception.ColumnAlreadyDeletedException;
-import com.playdata.pdfolio.global.exception.PdFolioException;
-import com.playdata.pdfolio.global.exception.ExceptionType;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

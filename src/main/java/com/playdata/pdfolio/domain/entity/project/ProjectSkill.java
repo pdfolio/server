@@ -1,6 +1,6 @@
-package com.playdata.pdfolio.domain.project.domain.entity;
+package com.playdata.pdfolio.domain.entity.project;
 
-import com.playdata.pdfolio.global.domain.entity.Skill;
+import com.playdata.pdfolio.domain.entity.common.Skill;
 import jakarta.persistence.*;
 import lombok.*;
 

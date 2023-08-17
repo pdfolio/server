@@ -23,7 +23,7 @@ public enum ExceptionType {
         this.message = message;
     }
 
-    public static ExceptionType of(Class<?> classType) {
+    public static ExceptionType of(Class<? extends PdFolioException> classType) {
         return Arrays.stream(values())
                 .filter(eType -> Objects.nonNull(eType.type) && eType.type.equals(classType))
                 .findFirst()

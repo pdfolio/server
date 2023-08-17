@@ -1,6 +1,7 @@
-package com.playdata.pdfolio.domain.gather.domain.entity;
+package com.playdata.pdfolio.domain.entity.heart;
 
-import com.playdata.pdfolio.global.domain.entity.Skill;
+import com.playdata.pdfolio.domain.entity.gather.Gather;
+import com.playdata.pdfolio.domain.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,13 +10,13 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
-public class GatherSkill {
+public class GatherHeart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    private Member member;
+    @ManyToOne
     private Gather gather;
-    @Enumerated(EnumType.STRING)
-    private Skill skill;
 }

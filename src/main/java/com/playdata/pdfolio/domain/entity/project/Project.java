@@ -1,12 +1,10 @@
-package com.playdata.pdfolio.domain.project.domain.entity;
+package com.playdata.pdfolio.domain.entity.project;
 
-import com.playdata.pdfolio.domain.member.domain.entity.Member;
-import com.playdata.pdfolio.global.domain.entity.BaseEntity;
-import com.playdata.pdfolio.global.domain.entity.Skill;
+import com.playdata.pdfolio.domain.entity.common.BaseEntity;
+import com.playdata.pdfolio.domain.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
