@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/gathers")
@@ -15,13 +17,18 @@ public class GatherController {
 
     // 모집글 작성
     @PostMapping
-    public void write(@RequestBody WriteRequest writeRequest){
+    public void GatherWrite(@RequestBody WriteRequest writeRequest){
         gatherService.writeGather(writeRequest);
     }
     // 모집글 수정
     @PutMapping
-    public void moify(@RequestBody WriteRequest writeRequest){
+    public void GatherMoify(@RequestBody WriteRequest writeRequest){
         gatherService.modifyGather(writeRequest);
+    }
+    // 모집글 삭제
+    @DeleteMapping("/{id}")
+    public void GatherDelete(@PathVariable(name = "id") Long id){
+        gatherService.deleteGather(id);
     }
 
 }

@@ -45,4 +45,9 @@ public class GatherService {
         }
     }
 
+    // 모집글 삭제
+    public void deleteGather(Long id){
+        gatherRepository.deleteById(id);
+    }
+
 }
