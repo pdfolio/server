@@ -14,17 +14,46 @@ import java.util.Set;
 @Getter
 public class Project extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "title", nullable = false, length = 50)
     private String title;
-    @Column(columnDefinition = "text")
+
+    @Column(name = "content", columnDefinition = "text", nullable = false)
     private String content;
-    @ManyToOne
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "url", column = @Column(name = "repository_url", nullable = false))
+    })
+    private Url repositoryUrl;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "url", column = @Column(name = "publish_url"))
+    })
+    private Url publishUrl;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "url", column = @Column(name = "thumbnail_url", nullable = false))
+    })
+    private Url thumbNailUrl;
+
+    @Column(name = "like_count")
+    @Builder.Default
+    private Integer likeCount = 0;
+
+    @Column(name = "view_count")
+    @Builder.Default
+    private Integer viewCount = 0;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
-    private String repositoryUrl;
-    private String publishUrl;
-    private Long likeCount;
-    private Long viewCount;
-    @OneToMany(mappedBy = "project")
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<ProjectSkill> skills;
 }

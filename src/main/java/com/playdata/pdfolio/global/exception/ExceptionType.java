@@ -12,8 +12,9 @@ import java.util.Objects;
 public enum ExceptionType {
 
     UNKNOWN_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "알수없는 에러"),
-    COLUMN_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "이미 삭제된 컬럼입니다.", ColumnAlreadyDeletedException.class);
-
+    COLUMN_ALREADY_DELETED(HttpStatus.BAD_REQUEST, "이미 삭제된 컬럼입니다.", ColumnAlreadyDeletedException.class),
+    NO_MATCHING_SKILL_TYPE(HttpStatus.BAD_REQUEST, "해당 기술 스택은 존재하지 않습니다.", NoSuchSkillException.class)
+    ;
     private final HttpStatus httpStatus;
     private final String message;
     private Class<? extends PdFolioException> type;
