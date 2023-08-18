@@ -10,6 +10,7 @@ public class ProviderFactory {
 
     private final GithubProvider githubProvider;
     private final GoogleProvider googleProvider;
+    private final KaKaoProvider kaKaoProvider;
 
     public Oauth2Provider getProvider(String providerName){
         Oauth2Provider returnType = null;
@@ -18,7 +19,10 @@ public class ProviderFactory {
                 returnType = githubProvider;
                 break;
             case "google":
-                returnType = new GoogleProvider();
+                returnType = googleProvider;
+                break;
+            case "kakao":
+                returnType = kaKaoProvider;
                 break;
             default:
                 throw new NotSupportedOauth2Exception();

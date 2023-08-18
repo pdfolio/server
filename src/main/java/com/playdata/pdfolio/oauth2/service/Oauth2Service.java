@@ -12,6 +12,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +24,13 @@ public class Oauth2Service{
     public void login(String providerName, String code){
         Oauth2Provider provider = providerFactory.getProvider(providerName);
         AccessTokenDto accessToken = getAccessToken(provider, code);
-        System.out.println("accessToken = " + accessToken.token());
+        getUserInfo(provider, accessToken);
     }
 
     public AccessTokenDto getAccessToken(Oauth2Provider provider, String code){
         return WebClient.create()
                 .post()
-                .uri(provider.getAccessTokenUrl())
+                .uri(provider.getAccessTokenUri())
                 .headers(header -> {
                     header.setBasicAuth(provider.getClientId(), provider.getClientSecret());
                     header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -49,7 +51,14 @@ public class Oauth2Service{
         return formData;
     }
 
-    public void getUserInfo(Oauth2Provider provider, String code){
-
+    public void getUserInfo(Oauth2Provider provider, AccessTokenDto tokenDto){
+        Map map = WebClient.create()
+                .get()
+                .uri(provider.getUserInfoUri())
+                .headers(header -> header.setBearerAuth(tokenDto.token()))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+        System.out.println("map = " + map);
     }
 }
