@@ -17,5 +17,7 @@ public class GoogleProvider implements Oauth2Provider {
     @Value("${oauth2.user.github.redirect-uri}")
     private String redirectUri;
     @Value("${oauth2.user.github.access-token-uri}")
-    private String accessTokenUrl;
+    private String accessTokenUri;
+    @Value("${oauth2.user.github.user-info-uri}")
+    private String userInfoUri;
 }
