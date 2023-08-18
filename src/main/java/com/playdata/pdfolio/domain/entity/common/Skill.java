@@ -48,23 +48,15 @@ public enum Skill {
     }
 
     public static List<Skill> from(List<String> skillNames) {
-        List<String> upperCaseSkillNames = toUpperCase(skillNames);
-
-        return upperCaseSkillNames.stream()
+        return skillNames.stream()
                 .map(Skill::findSkillType)
                 .collect(Collectors.toList());
     }
 
     private static Skill findSkillType(String skillName) {
         return Arrays.stream(values())
-                .filter(skillType -> skillType.getSkillName().equals(skillName))
+                .filter(skillType -> skillType.getSkillName().equals(skillName.toUpperCase()))
                 .findFirst()
                 .orElseThrow(NoSuchSkillException::new);
-    }
-
-    private static List<String> toUpperCase(List<String> skillNames) {
-        return skillNames.stream()
-                .map(String::toUpperCase)
-                .collect(Collectors.toList());
     }
 }

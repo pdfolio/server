@@ -5,7 +5,8 @@ import com.playdata.pdfolio.domain.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -55,5 +56,7 @@ public class Project extends BaseEntity {
     private Member member;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<ProjectSkill> skills;
+    @Builder.Default
+    private List<ProjectSkill> skills = new ArrayList<>();
+
 }

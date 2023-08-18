@@ -5,6 +5,7 @@ import com.playdata.pdfolio.domain.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,5 +31,7 @@ public class ProjectComment extends BaseEntity {
     private Member member;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<ProjectReply> replies;
+    @Builder.Default
+    private List<ProjectReply> replies = new ArrayList<>();
+
 }
