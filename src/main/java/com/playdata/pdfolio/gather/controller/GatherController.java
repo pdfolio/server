@@ -21,9 +21,11 @@ public class GatherController {
         gatherService.writeGather(writeRequest);
     }
     // 모집글 수정
-    @PutMapping
-    public void GatherMoify(@RequestBody WriteRequest writeRequest){
-        gatherService.modifyGather(writeRequest);
+    @PutMapping("/{id}")
+    public void GatherModify(@PathVariable(name = "id") Long id,
+                             @RequestBody WriteRequest writeRequest)
+    {
+        gatherService.modifyGather(writeRequest, id);
     }
     // 모집글 삭제
     @DeleteMapping("/{id}")
