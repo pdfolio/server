@@ -1,11 +1,16 @@
 package com.playdata.pdfolio.oauth2.service;
 
-import com.playdata.pdfolio.domain.dto.oauth2.AccessTokenDto;
+import com.playdata.pdfolio.domain.entity.member.Member;
+import com.playdata.pdfolio.domain.entity.oauth2.Oauth2AccessToken;
+import com.playdata.pdfolio.domain.entity.oauth2.Oauth2UserInfo;
+import com.playdata.pdfolio.member.repository.MemberRepository;
 import com.playdata.pdfolio.oauth2.provider.Oauth2Provider;
 import com.playdata.pdfolio.oauth2.provider.ProviderFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,52 +18,71 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class Oauth2Service{
 
     private final ProviderFactory providerFactory;
+    private final MemberRepository memberRepository;
 
-    public void login(String providerName, String code){
+    public Member login(String providerName, String code){
         Oauth2Provider provider = providerFactory.getProvider(providerName);
-        AccessTokenDto accessToken = getAccessToken(provider, code);
-        getUserInfo(provider, accessToken);
+        Oauth2AccessToken accessToken = getAccessToken(provider, code);
+        Oauth2UserInfo userInfo = getUserInfo(provider, accessToken);
+
+        Member member = memberRepository
+                .findByProviderIdAndProviderName(
+                        userInfo.getProviderId(),
+                        userInfo.getProviderName())
+                .orElseGet(()->
+                        memberRepository.save(Member.builder()
+                                .name(userInfo.getUserName())
+                                .nickName(userInfo.getUserName())
+                                .providerId(userInfo.getProviderId())
+                                .providerName(userInfo.getProviderName())
+                                .imageUrl(userInfo.getImageUrl())
+                                .build()));
+
+        return member;
     }
 
-    public AccessTokenDto getAccessToken(Oauth2Provider provider, String code){
+    private Oauth2AccessToken getAccessToken(Oauth2Provider provider, String code){
         return WebClient.create()
                 .post()
                 .uri(provider.getAccessTokenUri())
                 .headers(header -> {
-                    header.setBasicAuth(provider.getClientId(), provider.getClientSecret());
                     header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                     header.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
                     header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
                 })
                 .bodyValue(tokenRequest(code, provider))
                 .retrieve()
-                .bodyToMono(AccessTokenDto.class)
+                .bodyToMono(Oauth2AccessToken.class)
                 .block();
+    }
+
+    private Oauth2UserInfo getUserInfo(Oauth2Provider provider, Oauth2AccessToken tokenDto){
+        Map<String, Object> attributes = WebClient.create()
+                .get()
+                .uri(provider.getUserInfoUri())
+                .headers(header -> header.setBearerAuth(tokenDto.token()))
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
+                .block();
+
+        return Oauth2UserInfo.of(provider.getName(), attributes);
     }
 
     private MultiValueMap<String, String> tokenRequest(String code, Oauth2Provider provider) {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("code", code);
+        formData.add("client_id", provider.getClientId());
+        formData.add("client_secret", provider.getClientSecret());
         formData.add("grant_type", "authorization_code");
         formData.add("redirect_uri", provider.getRedirectUri());
         return formData;
-    }
-
-    public void getUserInfo(Oauth2Provider provider, AccessTokenDto tokenDto){
-        Map map = WebClient.create()
-                .get()
-                .uri(provider.getUserInfoUri())
-                .headers(header -> header.setBearerAuth(tokenDto.token()))
-                .retrieve()
-                .bodyToMono(Map.class)
-                .block();
-        System.out.println("map = " + map);
     }
 }
