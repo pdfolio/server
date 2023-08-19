@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class GoogleProvider implements Oauth2Provider {
 
+    private final String name = "google";
+
     @Value("${oauth2.user.google.client-id}")
     private String clientId;
     @Value("${oauth2.user.google.client-secret}")

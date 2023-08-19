@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class GithubProvider implements Oauth2Provider{
 
+    private final String name = "github";
+
     @Value("${oauth2.user.github.client-id}")
     private String clientId;
     @Value("${oauth2.user.github.client-secret}")

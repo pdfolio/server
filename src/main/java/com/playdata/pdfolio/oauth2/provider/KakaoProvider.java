@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Getter
 public class KakaoProvider implements Oauth2Provider{
 
+    private final String name = "kakao";
+
     @Value("${oauth2.user.kakao.client-id}")
     private String clientId;
     @Value("${oauth2.user.kakao.client-secret}")
