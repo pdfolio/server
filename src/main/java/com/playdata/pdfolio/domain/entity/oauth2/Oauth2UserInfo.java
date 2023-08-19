@@ -28,7 +28,7 @@ public enum Oauth2UserInfo {
             Map<String, Object> properties = (Map<String, Object>)attributes.get("properties");
             super.providerId = String.valueOf(attributes.get("id"));
             super.userName = (String) properties.get("nickname");
-            super.imageUrl = (String) attributes.get("picture");
+            super.imageUrl = (String) properties.get("profile_image");
             return this;
         }
     },
