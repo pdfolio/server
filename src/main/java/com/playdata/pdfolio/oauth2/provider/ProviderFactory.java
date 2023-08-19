@@ -10,7 +10,7 @@ public class ProviderFactory {
 
     private final GithubProvider githubProvider;
     private final GoogleProvider googleProvider;
-    private final KaKaoProvider kaKaoProvider;
+    private final KakaoProvider kaKaoProvider;
 
     public Oauth2Provider getProvider(String providerName){
         Oauth2Provider returnType = null;

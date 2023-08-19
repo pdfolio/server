@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 @Getter
-public class KaKaoProvider implements Oauth2Provider{
+public class KakaoProvider implements Oauth2Provider{
 
     @Value("${oauth2.user.kakao.client-id}")
     private String clientId;
