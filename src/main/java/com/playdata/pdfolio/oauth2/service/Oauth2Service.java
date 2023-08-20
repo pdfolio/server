@@ -4,7 +4,7 @@ import com.playdata.pdfolio.domain.dto.jwt.JwtTokenDto;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.domain.entity.oauth2.Oauth2AccessToken;
 import com.playdata.pdfolio.domain.entity.oauth2.Oauth2UserInfo;
-import com.playdata.pdfolio.domain.response.oauth2.Oauth2Response;
+import com.playdata.pdfolio.domain.response.oauth2.Oauth2LoginResponse;
 import com.playdata.pdfolio.jwt.service.JwtService;
 import com.playdata.pdfolio.member.repository.MemberRepository;
 import com.playdata.pdfolio.oauth2.provider.Oauth2Provider;
@@ -31,7 +31,7 @@ public class Oauth2Service {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
-    public Oauth2Response login(String providerName, String code) {
+    public Oauth2LoginResponse login(String providerName, String code) {
         Oauth2Provider provider = providerFactory.getProvider(providerName);
         Oauth2AccessToken accessToken = getAccessToken(provider, code);
         Oauth2UserInfo userInfo = getUserInfo(provider, accessToken);
@@ -51,7 +51,7 @@ public class Oauth2Service {
 
         JwtTokenDto jwtTokenDto = jwtService.generateToken(member);
 
-        return Oauth2Response.of(userInfo, jwtTokenDto);
+        return Oauth2LoginResponse.of(userInfo, jwtTokenDto);
     }
 
     private Oauth2AccessToken getAccessToken(Oauth2Provider provider, String code) {
