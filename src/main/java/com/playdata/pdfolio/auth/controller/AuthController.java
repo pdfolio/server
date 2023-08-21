@@ -5,11 +5,9 @@ import com.playdata.pdfolio.domain.dto.jwt.JwtDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +16,8 @@ public class AuthController {
 
     private final AuthService authService;
     @GetMapping("/renew")
-    public ResponseEntity<JwtDto> renewToken(
+    @ResponseStatus(HttpStatus.OK)
+    public JwtDto renewToken(
             @CookieValue(value = "refreshToken") Cookie refreshToken,
             HttpServletResponse response)
     {
@@ -29,6 +28,6 @@ public class AuthController {
         cookie.setHttpOnly(true);
 
         response.addCookie(cookie);
-        return ResponseEntity.ok().body(jwtTokenDto);
+        return jwtTokenDto;
     }
 }
