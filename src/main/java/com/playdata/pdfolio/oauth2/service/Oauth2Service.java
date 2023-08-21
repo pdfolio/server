@@ -1,11 +1,11 @@
 package com.playdata.pdfolio.oauth2.service;
 
-import com.playdata.pdfolio.domain.dto.jwt.JwtTokenDto;
+import com.playdata.pdfolio.auth.service.AuthService;
+import com.playdata.pdfolio.domain.dto.jwt.JwtDto;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.domain.entity.oauth2.Oauth2AccessToken;
 import com.playdata.pdfolio.domain.entity.oauth2.Oauth2UserInfo;
 import com.playdata.pdfolio.domain.response.oauth2.Oauth2LoginResponse;
-import com.playdata.pdfolio.jwt.service.JwtService;
 import com.playdata.pdfolio.member.repository.MemberRepository;
 import com.playdata.pdfolio.oauth2.provider.Oauth2Provider;
 import com.playdata.pdfolio.oauth2.provider.ProviderFactory;
@@ -28,7 +28,7 @@ import java.util.Map;
 public class Oauth2Service {
 
     private final ProviderFactory providerFactory;
-    private final JwtService jwtService;
+    private final AuthService authService;
     private final MemberRepository memberRepository;
 
     public Oauth2LoginResponse login(String providerName, String code) {
@@ -49,8 +49,7 @@ public class Oauth2Service {
                                 .imageUrl(userInfo.getImageUrl())
                                 .build()));
 
-        JwtTokenDto jwtTokenDto = jwtService.generateToken(member);
-
+        JwtDto jwtTokenDto = authService.createToken(member);
         return Oauth2LoginResponse.of(userInfo, jwtTokenDto);
     }
 

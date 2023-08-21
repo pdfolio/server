@@ -23,11 +23,10 @@ public class Oauth2Controller {
     {
         Oauth2LoginResponse loginResponse = oauth2Service.login(provider, code);
         Cookie cookie = new Cookie("refreshToken", loginResponse.jwtToken().refreshToken());
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
+//        cookie.setSecure(true);
+////        cookie.setHttpOnly(true);
 
         response.addCookie(cookie);
         return ResponseEntity.ok().body(loginResponse);
     }
-
 }
