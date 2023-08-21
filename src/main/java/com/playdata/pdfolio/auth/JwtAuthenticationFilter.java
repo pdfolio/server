@@ -1,10 +1,7 @@
 package com.playdata.pdfolio.auth;
 
-import com.playdata.pdfolio.auth.exception.AccessTokenExpiredException;
-import com.playdata.pdfolio.auth.exception.InvalidTokenException;
 import com.playdata.pdfolio.auth.exception.TokenNotFoundException;
 import com.playdata.pdfolio.jwt.service.JwtService;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
