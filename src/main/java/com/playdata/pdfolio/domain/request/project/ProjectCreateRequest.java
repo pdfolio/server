@@ -1,6 +1,5 @@
 package com.playdata.pdfolio.domain.request.project;
 
-import com.playdata.pdfolio.global.validate.project.ProjectValidateMessage;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,13 +22,18 @@ public class ProjectCreateRequest {
     @NotBlank(message = CONTENT_NOT_BLANK_MESSAGE)
     private String content;
 
+    @NotBlank(message = DESCRIPTION_NOT_BLANK_MESSAGE)
+    @Length(max = 50, message = DESCRIPTION_MAX_LENGTH_MESSAGE)
+    private String description;
+
     @URL(message = INVALID_URL_TYPE_MESSAGE)
     @NotBlank(message = REPO_URL_NOT_BLANK_MESSAGE)
     private String repositoryUrl;
 
     private String publishUrl;
 
+    @URL(message = INVALID_URL_TYPE_MESSAGE)
+    @NotBlank(message = THUMBNAIL_NOT_BLANK_MESSAGE)
     private String thumbNailUrl;
-
 
 }

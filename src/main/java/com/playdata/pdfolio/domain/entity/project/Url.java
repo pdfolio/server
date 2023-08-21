@@ -2,6 +2,7 @@ package com.playdata.pdfolio.domain.entity.project;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class Url {
 
     @Column
+    @Lob
     private String url;
 
     private Url(String url) {

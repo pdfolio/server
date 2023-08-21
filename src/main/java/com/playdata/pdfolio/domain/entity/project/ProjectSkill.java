@@ -23,4 +23,8 @@ public class ProjectSkill {
     @Enumerated(EnumType.STRING)
     private Skill skill;
 
+    public String getSkillName() {
+        return this.skill.getSkillName();
+    }
+
 }

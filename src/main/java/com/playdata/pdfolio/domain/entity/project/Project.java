@@ -1,12 +1,14 @@
 package com.playdata.pdfolio.domain.entity.project;
 
 import com.playdata.pdfolio.domain.entity.common.BaseEntity;
+import com.playdata.pdfolio.domain.entity.common.Skill;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
@@ -22,8 +24,12 @@ public class Project extends BaseEntity {
     @Column(name = "title", nullable = false, length = 50)
     private String title;
 
-    @Column(name = "content", columnDefinition = "text", nullable = false)
+    @Column(name = "content", nullable = false)
+    @Lob
     private String content;
+
+    @Column(name = "description", nullable = false, length = 50)
+    private String description;
 
     @Embedded
     @AttributeOverrides({
@@ -43,9 +49,9 @@ public class Project extends BaseEntity {
     })
     private Url thumbNailUrl;
 
-    @Column(name = "like_count")
+    @Column(name = "heart_count")
     @Builder.Default
-    private Integer likeCount = 0;
+    private Integer heartCount = 0;
 
     @Column(name = "view_count")
     @Builder.Default
@@ -57,6 +63,13 @@ public class Project extends BaseEntity {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Builder.Default
+    private List<ProjectComment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
     private List<ProjectSkill> skills = new ArrayList<>();
 
+    public Integer getCommentCount() {
+        return this.comments.size();
+    }
 }

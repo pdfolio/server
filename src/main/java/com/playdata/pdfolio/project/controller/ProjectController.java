@@ -1,5 +1,8 @@
 package com.playdata.pdfolio.project.controller;
 
+import com.playdata.pdfolio.domain.request.project.ProjectCreateRequest;
+import com.playdata.pdfolio.domain.response.project.ProjectCreateResponse;
+import com.playdata.pdfolio.project.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/project")
 public class ProjectController {
 
-//    @PostMapping
-//    public ResponseEntity<?> createProject(@Valid @RequestBody ) {
-//
-//    }
+    private final ProjectService projectService;
+
+    @PostMapping
+    public ResponseEntity<ProjectCreateResponse> save(@Valid @RequestBody ProjectCreateRequest projectCreateRequest) {
+
+        return null;
+    }
 
 }
