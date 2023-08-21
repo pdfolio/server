@@ -16,4 +16,8 @@ public class LoginToken {
     private String refreshToken;
     @OneToOne
     private Member member;
+
+    public void updateRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
+    }
 }

@@ -2,8 +2,7 @@ package com.playdata.pdfolio.jwt.service;
 
 import com.playdata.pdfolio.auth.exception.AccessTokenExpiredException;
 import com.playdata.pdfolio.auth.exception.InvalidTokenException;
-import com.playdata.pdfolio.domain.dto.jwt.JwtTokenDto;
-import com.playdata.pdfolio.domain.entity.jwt.LoginToken;
+import com.playdata.pdfolio.domain.dto.jwt.JwtDto;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.jwt.repository.LoginTokenRepository;
 import io.jsonwebtoken.Claims;
@@ -12,7 +11,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,15 +31,9 @@ public class JwtService {
     private final long ACCESS_TOKEN_VALID_TIME = 3 * 60 * 60 * 1000L; // 3시간
     private final long REFRESH_TOKEN_VALID_TIME = 3 * 24 * 60 * 60 * 1000L; // 3일
 
-    public JwtTokenDto updateRefreshToken(String refreshToken){
-        LoginToken loginToken = loginTokenRepository
-                .findByRefreshToken(refreshToken)
-                .orElseThrow(InvalidTokenException::new);
-        return generateToken(loginToken.getMember());
-    }
 
 
-    public JwtTokenDto generateToken(Member member){
+    public JwtDto generateToken(Member member){
 
         final SecretKeySpec KEY = new SecretKeySpec(SECRET_KEY.getBytes(), HS256.getJcaName());
         long now = System.currentTimeMillis();
@@ -59,14 +51,7 @@ public class JwtService {
                 .signWith(KEY)
                 .compact();
 
-        loginTokenRepository.save(
-                LoginToken.builder()
-                        .refreshToken(refreshToken)
-                        .member(member)
-                        .build()
-        );
-
-        return JwtTokenDto.builder()
+        return JwtDto.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
