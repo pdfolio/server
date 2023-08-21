@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,11 +31,14 @@ public class Gather extends BaseEntity {
     private GatherCategory category;
     private String contact;
     @Builder.Default
-    private Long likeCount = 0L;
+    private Long heartCount = 0L;
     @Builder.Default
     private Long viewCount = 0L;
     @ManyToOne
     private Member member;
-    @OneToMany(mappedBy = "gather")
+    @OneToMany(mappedBy = "gather", fetch = FetchType.LAZY)
     private Set<GatherSkill> skills;
+    @OneToMany(mappedBy = "gather", fetch = FetchType.LAZY)
+    private List<GatherComment> comments;
+
 }

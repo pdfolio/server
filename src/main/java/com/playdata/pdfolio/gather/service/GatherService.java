@@ -1,7 +1,14 @@
 package com.playdata.pdfolio.gather.service;
 
 import com.playdata.pdfolio.domain.entity.gather.Gather;
+import com.playdata.pdfolio.domain.entity.gather.GatherComment;
+import com.playdata.pdfolio.domain.entity.gather.GatherReply;
+import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
+import com.playdata.pdfolio.domain.request.gather.WriteReplyRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteRequest;
+import com.playdata.pdfolio.domain.response.gather.GatherResponse;
+import com.playdata.pdfolio.gather.repository.GatherCommentRepository;
+import com.playdata.pdfolio.gather.repository.GatherReplyRepository;
 import com.playdata.pdfolio.gather.repository.GatherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +23,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GatherService {
     private final GatherRepository gatherRepository;
+    private final GatherCommentRepository gatherCommentRepository;
+    private final GatherReplyRepository gatherReplyRepository;
     
     // 모집글 작성
     public void writeGather(WriteRequest writeRequest){
+
         Gather save = gatherRepository.save(writeRequest.toEntity());
 //            writeRequest.gatherSkill(); 스킬 배열 하나씩 저장해야됨
     }
@@ -55,4 +65,62 @@ public class GatherService {
         // gatherRepository.deleteById(id);
     }
 
+    // 모집글 상세 보기
+    public GatherResponse detailGather(Long id){
+        Optional<Gather> byId = gatherRepository.findByGather(id);
+        Gather gather = byId.orElseThrow(() ->
+                new RuntimeException("Not Found Gather" + id));
+        return new GatherResponse(gather);
+    }
+    // 모집글 전체 보기
+    public void allGather(Long id){
+
+    }
+// -----------------------------------------------------------------------------
+    // 코멘트 작성
+    public void writeGatherComment(WriteCommentRequest writeCommentRequest){
+        gatherCommentRepository.save(writeCommentRequest.toEntity());
+    }
+
+    // 코멘트 수정
+    public void modifyGatherComment(WriteCommentRequest writeCommentRequest,Long id){
+        Optional<GatherComment> optionalGatherComment = gatherCommentRepository.findById(id);
+
+        if (optionalGatherComment.isPresent()) { //  있는지 확인하고 실행
+            GatherComment existiongGatherComment = optionalGatherComment.get();
+            existiongGatherComment.setContent(writeCommentRequest.content());
+        } else {
+            // Gather 엔터티를 찾지 못한 경우 예외 처리 또는 메시지 출력
+            // 예: throw new NotFoundException("Gather not found with id: " + writeRequest.id());
+        }
+    }
+
+    // 코멘트 삭제
+    public void deleteGatherComment(Long id){
+        GatherComment gatherComment = gatherCommentRepository.findById(id)
+                .orElseThrow(NoSuchElementException::new);
+        gatherComment.deleteColumn();
+    }
+// -----------------------------------------------------------------------------
+    // 리플라이 작성
+    public void writeGatherReply(WriteReplyRequest writeReplyRequest){
+        gatherReplyRepository.save(writeReplyRequest.toEntity());
+    }
+    // 리플라이 수정
+    public void modifyGatherReply(WriteReplyRequest writeReplyRequest,Long id){
+        Optional<GatherReply> optionalGatherReply = gatherReplyRepository.findById(id);
+        if (optionalGatherReply.isPresent()) { //  있는지 확인하고 실행
+            GatherReply existiongGatherReply = optionalGatherReply.get();
+            existiongGatherReply.setContent(writeReplyRequest.content());
+        } else {
+            // Gather 엔터티를 찾지 못한 경우 예외 처리 또는 메시지 출력
+            // 예: throw new NotFoundException("Gather not found with id: " + writeRequest.id());
+        }
+    }
+    // 리플라이 삭제
+    public void deleteGatherReply(Long id){
+        GatherReply gatherReply = gatherReplyRepository.findById(id)
+                .orElseThrow(NoSuchElementException::new);
+        gatherReply.deleteColumn();
+    }
 }

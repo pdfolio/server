@@ -2,6 +2,7 @@ package com.playdata.pdfolio.domain.request.gather;
 
 import com.playdata.pdfolio.domain.entity.gather.Gather;
 import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
+import com.playdata.pdfolio.domain.entity.member.Member;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record WriteRequest(
-        Long id,
+        Long MemberId,
         String title,
         String content,
         LocalDate startDate,
@@ -22,6 +23,7 @@ public record WriteRequest(
 ) {
     public Gather toEntity(){
         return Gather.builder()
+                .member(Member.builder().id(MemberId).build())
                 .title(title)
                 .content(content)
                 .teamSize(teamSize)
