@@ -25,8 +25,8 @@
         private Long teamSize;
         private GatherCategory category;
         private String contact;
-        private Long heartCount;
-        private Long viewCount;
+        private Integer heartCount;
+        private Integer viewCount;
         private Boolean isDeleted;
 
         private Member member;
