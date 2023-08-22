@@ -46,11 +46,8 @@ public class ProjectResponse {
         this.memberName = memberName;
     }
 
-    public static ProjectResponse from(Project project) {
-        List<ProjectSkillResponse> projectSkills = project.getSkills()
-                .stream()
-                .map(ProjectSkillResponse::from)
-                .toList();
+    public static ProjectResponse of(final Project project) {
+        List<ProjectSkillResponse> projectSkills = ProjectSkillResponse.of(project.getSkills());
 
         return new ProjectResponse(
                 project.getId(),

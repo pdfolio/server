@@ -23,7 +23,7 @@ class SkillTest {
         List<String> skillNames = Arrays.asList(skill1, skill2, skill3);
 
         // when
-        List<Skill> skills = Skill.from(skillNames);
+        List<Skill> skills = Skill.of(skillNames);
 
         // then
         // Skill이 잘 생성되었는지 확인
@@ -46,10 +46,10 @@ class SkillTest {
         List<String> nonexistentSkills = Arrays.asList("FULLTER", "GOLANG");
 
         // 처리된 예외가 잘 던져지는지 테스트
-        assertThatThrownBy(() -> Skill.from(nonexistentSkills))
+        assertThatThrownBy(() -> Skill.of(nonexistentSkills))
                 .isInstanceOf(NoSuchSkillException.class);
 
-        assertThatThrownBy(() -> Skill.from(nonexistentSkills))
+        assertThatThrownBy(() -> Skill.of(nonexistentSkills))
                 .isInstanceOf(PdFolioException.class);
     }
 

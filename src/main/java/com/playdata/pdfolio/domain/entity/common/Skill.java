@@ -47,7 +47,7 @@ public enum Skill {
         this.skillName = skillName;
     }
 
-    public static List<Skill> from(List<String> skillNames) {
+    public static List<Skill> of(List<String> skillNames) {
         return skillNames.stream()
                 .map(Skill::findSkillType)
                 .collect(Collectors.toList());

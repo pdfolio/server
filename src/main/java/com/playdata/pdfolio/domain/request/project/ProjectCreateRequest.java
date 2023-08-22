@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
+import java.util.List;
+
 import static com.playdata.pdfolio.global.validate.project.ProjectValidateMessage.*;
 
 @Getter
@@ -30,10 +32,12 @@ public class ProjectCreateRequest {
     @NotBlank(message = REPO_URL_NOT_BLANK_MESSAGE)
     private String repositoryUrl;
 
+    @URL(message = INVALID_URL_TYPE_MESSAGE)
     private String publishUrl;
 
     @URL(message = INVALID_URL_TYPE_MESSAGE)
     @NotBlank(message = THUMBNAIL_NOT_BLANK_MESSAGE)
     private String thumbNailUrl;
 
+    private List<String> projectSkills;
 }
