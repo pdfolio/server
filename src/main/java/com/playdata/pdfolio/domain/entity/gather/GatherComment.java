@@ -13,12 +13,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
+@Setter
+
 public class GatherComment extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String content;
     @ManyToOne
-    private Project project;
+    private Gather gather;
     @ManyToOne
     private Member member;
     @OneToMany(mappedBy = "comment")
