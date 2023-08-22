@@ -4,6 +4,7 @@ import com.playdata.pdfolio.domain.entity.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,8 +17,14 @@ public class Member extends BaseEntity {
     private Long id;
     private String name;
     private String nickName;
-    private String provider;
     private String providerId;
+    private String providerName;
+    private String imageUrl;
     @OneToMany(mappedBy = "member")
-    private Set<MemberSkill> skills;
+    private Set<MemberSkill> skills = new HashSet<>();
+
+    public void update(String nickName, String imageUrl){
+        this.nickName = nickName;
+        this.imageUrl = imageUrl;
+    }
 }
