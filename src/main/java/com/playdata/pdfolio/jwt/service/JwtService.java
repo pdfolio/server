@@ -2,7 +2,8 @@ package com.playdata.pdfolio.jwt.service;
 
 import com.playdata.pdfolio.auth.exception.AccessTokenExpiredException;
 import com.playdata.pdfolio.auth.exception.InvalidTokenException;
-import com.playdata.pdfolio.domain.dto.jwt.JwtDto;
+import com.playdata.pdfolio.domain.dto.jwt.TokenDto;
+import com.playdata.pdfolio.domain.dto.jwt.UserInfoDto;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.jwt.repository.LoginTokenRepository;
 import io.jsonwebtoken.Claims;
@@ -31,9 +32,7 @@ public class JwtService {
     private final long ACCESS_TOKEN_VALID_TIME = 3 * 60 * 60 * 1000L; // 3시간
     private final long REFRESH_TOKEN_VALID_TIME = 3 * 24 * 60 * 60 * 1000L; // 3일
 
-
-
-    public JwtDto generateToken(Member member){
+    public TokenDto generateToken(Member member){
 
         final SecretKeySpec KEY = new SecretKeySpec(SECRET_KEY.getBytes(), HS256.getJcaName());
         long now = System.currentTimeMillis();
@@ -51,11 +50,18 @@ public class JwtService {
                 .signWith(KEY)
                 .compact();
 
-        return JwtDto.builder()
+        return TokenDto.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public UserInfoDto getUserInfo(String token){
+        Map<String, Object> claims = getClaims(token);
+        Long id = ((Integer)claims.get("id")).longValue();
+        String nickName = (String)claims.get("nickName");
+        return new UserInfoDto(id, nickName);
     }
 
     public Map<String, Object> getClaims(String bearerToken){
