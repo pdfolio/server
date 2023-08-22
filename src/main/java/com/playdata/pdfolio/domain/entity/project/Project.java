@@ -23,8 +23,16 @@ public class Project extends BaseEntity {
     private Member member;
     private String repositoryUrl;
     private String publishUrl;
-    private Long likeCount;
+    private Long heartCount;
     private Long viewCount;
     @OneToMany(mappedBy = "project")
     private Set<ProjectSkill> skills;
+
+    public void increaseHeartCount() {
+        this.heartCount++;
+    }
+
+    public void decreaseHeartCount() {
+        this.heartCount--;
+    }
 }
