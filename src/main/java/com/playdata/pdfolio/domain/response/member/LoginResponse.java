@@ -1,6 +1,6 @@
 package com.playdata.pdfolio.domain.response.member;
 
-import com.playdata.pdfolio.domain.dto.jwt.JwtDto;
+import com.playdata.pdfolio.domain.dto.jwt.TokenDto;
 
-public record LoginResponse(JwtDto jwtTokenDto) {
+public record LoginResponse(TokenDto jwtTokenDto) {
 }

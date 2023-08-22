@@ -1,11 +1,12 @@
 package com.playdata.pdfolio.oauth2.controller;
 
-import com.playdata.pdfolio.domain.response.oauth2.Oauth2LoginResponse;
+import com.playdata.pdfolio.domain.request.oauth2.LoginRequest;
+import com.playdata.pdfolio.domain.request.oauth2.SignupRequest;
+import com.playdata.pdfolio.domain.response.oauth2.Oauth2Response;
+import com.playdata.pdfolio.domain.response.oauth2.Oauth2StatusResponse;
 import com.playdata.pdfolio.oauth2.service.Oauth2Service;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,18 +16,28 @@ public class Oauth2Controller {
 
     private final Oauth2Service oauth2Service;
 
-    @GetMapping("/{provider}")
-    public ResponseEntity<Oauth2LoginResponse> login(
+    @PostMapping("/{provider}/login")
+    public Oauth2Response login(
             @PathVariable("provider") String provider,
-            @RequestParam("code") String code,
-            HttpServletResponse response)
+            @RequestBody LoginRequest loginRequest)
     {
-        Oauth2LoginResponse loginResponse = oauth2Service.login(provider, code);
-        Cookie cookie = new Cookie("refreshToken", loginResponse.jwtToken().refreshToken());
-//        cookie.setSecure(true);
-////        cookie.setHttpOnly(true);
+        return oauth2Service.login(provider, loginRequest);
+    }
 
-        response.addCookie(cookie);
-        return ResponseEntity.ok().body(loginResponse);
+    @PostMapping("/{provider}/signup")
+    public Oauth2Response signup(
+            @PathVariable("provider") String provider,
+            @RequestBody SignupRequest signupRequest)
+    {
+        return oauth2Service.signup(provider, signupRequest);
+    }
+
+    @GetMapping("/{provider}/check")
+    @ResponseStatus(HttpStatus.OK)
+    public Oauth2StatusResponse check(
+            @PathVariable("provider") String provider,
+            @RequestParam("code") String code)
+    {
+        return oauth2Service.check(provider, code);
     }
 }
