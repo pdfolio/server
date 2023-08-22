@@ -1,6 +1,7 @@
 package com.playdata.pdfolio.gather.service;
 
 import com.playdata.pdfolio.domain.entity.gather.Gather;
+import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
 import com.playdata.pdfolio.domain.entity.gather.GatherComment;
 import com.playdata.pdfolio.domain.entity.gather.GatherReply;
 import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
@@ -75,13 +76,18 @@ public class GatherService {
         return new GatherDetailResponse(gather);
     }
     // 모집글 전체 보기
-    public Page<GatherResponse> allGather(PageRequest request){
-        Page<Gather> all = gatherRepository.findAll(request);
+//    public Page<GatherResponse> allGather(PageRequest request){
+//        Page<Gather> all = gatherRepository.findAll(request);
+//        return all.map(GatherResponse::new);
+//    }
+
+    // 모집글 전체 보기 / 모집글 제목 , 글 내용 , 카테고리 검색
+    public Page<GatherResponse> allGather(PageRequest request, String keyword, GatherCategory category){
+        Page<Gather> all = gatherRepository.findSearchKeyword(request,keyword,category);
         return all.map(GatherResponse::new);
     }
 
-    // 제목 , 글 내용 , 스킬 ,모집중 검색
-    // 카테고리 검색
+
 
 // -----------------------------------------------------------------------------
     // 코멘트 작성

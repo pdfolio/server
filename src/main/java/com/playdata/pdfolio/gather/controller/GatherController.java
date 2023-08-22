@@ -1,6 +1,7 @@
 package com.playdata.pdfolio.gather.controller;
 
 import com.playdata.pdfolio.domain.entity.gather.Gather;
+import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
 import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteReplyRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteRequest;
@@ -36,20 +37,28 @@ public class GatherController {
         gatherService.deleteGather(id);
     }
     // 모집글 상세 보기
-    @GetMapping("detail/{id}")
+    @GetMapping("/detail/{id}")
     public GatherDetailResponse detailGather(@PathVariable(name = "id") Long id){
        return gatherService.detailGather(id);
     }
 
-    // 모집글 전체 보기
+    // 모집글 전체 보기 / 모집글 제목 , 글 내용 , 카테고리 검색
     @GetMapping
     public Page<GatherResponse> allGather(
             @RequestParam(required = false,defaultValue = "0",name = "page")
             Integer page,
             @RequestParam(required = false,defaultValue = "8",name = "size")
-            Integer size) {
-        return gatherService.allGather(PageRequest.of(page,size));
+            Integer size,
+            @RequestParam(required = false,defaultValue = "",name = "keyword")
+            String keyword,
+            @RequestParam(required = false,defaultValue = "",name = "category")
+            GatherCategory category
+            ) {
+        PageRequest request = PageRequest.of(page, size);
+        return gatherService.allGather(request, keyword, category);
     }
+
+
 
 // -----------------------------------------------------------------------------
     // 코멘트 작성
