@@ -11,10 +11,20 @@ import lombok.*;
 @Getter
 public class ProjectSkill {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Skill skill;
+
+    public String getSkillName() {
+        return this.skill.getSkillName();
+    }
+
 }

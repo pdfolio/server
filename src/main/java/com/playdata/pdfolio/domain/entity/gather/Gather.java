@@ -4,9 +4,9 @@ import com.playdata.pdfolio.domain.entity.common.BaseEntity;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
-@DynamicUpdate
+@Setter
 public class Gather extends BaseEntity {
 
     @Id
@@ -26,9 +26,8 @@ public class Gather extends BaseEntity {
     @Column(columnDefinition = "text")
     private String content;
 
-    private LocalDateTime startDate;
-
-    private LocalDateTime closeDate;
+    private LocalDate startDate;
+    private LocalDate closeDate;
 
     private Long teamSize;
 
@@ -57,4 +56,8 @@ public class Gather extends BaseEntity {
     public void decreaseHeartCount() {
         this.heartCount--;
     }
+
+    @OneToMany(mappedBy = "gather", fetch = FetchType.LAZY)
+    private List<GatherComment> comments;
+
 }
