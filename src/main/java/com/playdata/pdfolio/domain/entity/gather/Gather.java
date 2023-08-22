@@ -21,23 +21,34 @@ public class Gather extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
+
     @Column(columnDefinition = "text")
     private String content;
+
     private LocalDate startDate;
     private LocalDate closeDate;
+
     private Long teamSize;
+
     @Enumerated(EnumType.STRING)
     private GatherCategory category;
+
     private String contact;
+  
     @Builder.Default
     private Long heartCount = 0L;
+  
     @Builder.Default
     private Long viewCount = 0L;
+  
     @ManyToOne
     private Member member;
+  
     @OneToMany(mappedBy = "gather", fetch = FetchType.LAZY)
     private Set<GatherSkill> skills;
+  
     @OneToMany(mappedBy = "gather", fetch = FetchType.LAZY)
     private List<GatherComment> comments;
 

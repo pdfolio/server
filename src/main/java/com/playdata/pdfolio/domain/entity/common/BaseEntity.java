@@ -18,10 +18,14 @@ public abstract class BaseEntity {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
     @LastModifiedDate
     private LocalDateTime modifiedAt;
+
     private LocalDateTime deletedAt;
+
     private Boolean isDeleted=false;
+
     public void deleteColumn(){
         if(isDeleted){
             throw new ColumnAlreadyDeletedException();

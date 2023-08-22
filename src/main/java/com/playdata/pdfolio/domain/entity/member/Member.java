@@ -10,16 +10,21 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder @Getter
+@Builder
+@Getter
 public class Member extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String nickName;
     private String providerId;
     private String providerName;
     private String imageUrl;
+  
     @OneToMany(mappedBy = "member")
     private Set<MemberSkill> skills = new HashSet<>();
 

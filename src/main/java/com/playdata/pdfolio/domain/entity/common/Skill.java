@@ -1,40 +1,62 @@
 package com.playdata.pdfolio.domain.entity.common;
 
+import com.playdata.pdfolio.global.exception.NoSuchSkillException;
+import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Getter
 public enum Skill {
 
     // Language
-    JAVA(SkillCategory.LANGUAGE),
-    KOTLIN(SkillCategory.LANGUAGE),
-    JAVASCRIPT(SkillCategory.LANGUAGE),
-    TYPESCRIPT(SkillCategory.LANGUAGE),
-    PYTHON(SkillCategory.LANGUAGE),
-    PHP(SkillCategory.LANGUAGE),
+    JAVA(SkillCategory.LANGUAGE, "JAVA"),
+    KOTLIN(SkillCategory.LANGUAGE, "KOTLIN"),
+    JAVASCRIPT(SkillCategory.LANGUAGE, "JAVASCRIPT"),
+    TYPESCRIPT(SkillCategory.LANGUAGE, "TYPESCRIPT"),
+    PYTHON(SkillCategory.LANGUAGE, "PYTHON"),
+    PHP(SkillCategory.LANGUAGE, "PHP"),
 
     // Framework
-    SPRING(SkillCategory.FRAMEWORK),
-    NEST(SkillCategory.FRAMEWORK),
-    EXPRESS(SkillCategory.FRAMEWORK),
-    DJANGO(SkillCategory.FRAMEWORK),
-    LARAVEL(SkillCategory.FRAMEWORK),
-    REACT(SkillCategory.FRAMEWORK),
-    VUE(SkillCategory.FRAMEWORK),
-    NEXT(SkillCategory.FRAMEWORK),
-    NUXT(SkillCategory.FRAMEWORK),
-
+    SPRING(SkillCategory.FRAMEWORK, "SPRING"),
+    NEST(SkillCategory.FRAMEWORK, "NEST"),
+    EXPRESS(SkillCategory.FRAMEWORK, "EXPRESS"),
+    DJANGO(SkillCategory.FRAMEWORK, "DJANGO"),
+    LARAVEL(SkillCategory.FRAMEWORK, "LARAVEL"),
+    REACT(SkillCategory.FRAMEWORK, "REACT"),
+    VUE(SkillCategory.FRAMEWORK, "VUE"),
+    NEXT(SkillCategory.FRAMEWORK, "NEXT"),
+    NUXT(SkillCategory.FRAMEWORK, "NUXT"),
 
     // Database
-    ORACLE(SkillCategory.DATABASE),
-    MYSQL(SkillCategory.DATABASE),
-    POSTGRESQL(SkillCategory.DATABASE),
-
+    ORACLE(SkillCategory.DATABASE, "ORACLE"),
+    MYSQL(SkillCategory.DATABASE, "MYSQL"),
+    POSTGRESQL(SkillCategory.DATABASE, "POSTGRESQL"),
 
     // Other
-    AWS(SkillCategory.ETC),
-    DOCKER(SkillCategory.ETC),
-    GIT(SkillCategory.ETC);
-    private final SkillCategory category;
+    AWS(SkillCategory.ETC, "AWS"),
+    DOCKER(SkillCategory.ETC, "DOCKER"),
+    GIT(SkillCategory.ETC, "GIT");
 
-    Skill(SkillCategory category) {
+    private final SkillCategory category;
+    private final String skillName;
+
+    Skill(SkillCategory category, String skillName) {
         this.category = category;
+        this.skillName = skillName;
+    }
+
+    public static List<Skill> of(List<String> skillNames) {
+        return skillNames.stream()
+                .map(Skill::findSkillType)
+                .collect(Collectors.toList());
+    }
+
+    private static Skill findSkillType(String skillName) {
+        return Arrays.stream(values())
+                .filter(skillType -> skillType.getSkillName().equals(skillName.toUpperCase()))
+                .findFirst()
+                .orElseThrow(NoSuchSkillException::new);
     }
 }
