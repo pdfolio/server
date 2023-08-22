@@ -72,4 +72,12 @@ public class Project extends BaseEntity {
     public Integer getCommentCount() {
         return this.comments.size();
     }
+
+    public void increaseHeartCount() {
+        this.heartCount++;
+    }
+
+    public void decreaseHeartCount() {
+        this.heartCount--;
+    }
 }

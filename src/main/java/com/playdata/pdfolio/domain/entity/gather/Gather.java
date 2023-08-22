@@ -49,6 +49,9 @@ public class Gather extends BaseEntity {
     @OneToMany(mappedBy = "gather")
     private Set<GatherSkill> skills;
 
+    @OneToMany(mappedBy = "gather", fetch = FetchType.LAZY)
+    private List<GatherComment> comments;
+
     public void increaseHeartCount() {
         this.heartCount++;
     }
@@ -56,8 +59,5 @@ public class Gather extends BaseEntity {
     public void decreaseHeartCount() {
         this.heartCount--;
     }
-
-    @OneToMany(mappedBy = "gather", fetch = FetchType.LAZY)
-    private List<GatherComment> comments;
 
 }
