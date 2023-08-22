@@ -1,17 +1,16 @@
 package com.playdata.pdfolio.gather.controller;
 
+import com.playdata.pdfolio.domain.entity.gather.Gather;
 import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteReplyRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteRequest;
+import com.playdata.pdfolio.domain.response.gather.GatherDetailResponse;
 import com.playdata.pdfolio.domain.response.gather.GatherResponse;
-import com.playdata.pdfolio.gather.repository.GatherCommentRepository;
 import com.playdata.pdfolio.gather.service.GatherService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,10 +36,21 @@ public class GatherController {
         gatherService.deleteGather(id);
     }
     // 모집글 상세 보기
-    @GetMapping("/{id}")
-    public GatherResponse detailGather(@PathVariable(name = "id") Long id){
+    @GetMapping("detail/{id}")
+    public GatherDetailResponse detailGather(@PathVariable(name = "id") Long id){
        return gatherService.detailGather(id);
     }
+
+    // 모집글 전체 보기
+    @GetMapping
+    public Page<GatherResponse> allGather(
+            @RequestParam(required = false,defaultValue = "0",name = "page")
+            Integer page,
+            @RequestParam(required = false,defaultValue = "8",name = "size")
+            Integer size) {
+        return gatherService.allGather(PageRequest.of(page,size));
+    }
+
 // -----------------------------------------------------------------------------
     // 코멘트 작성
     @PostMapping("/comment")

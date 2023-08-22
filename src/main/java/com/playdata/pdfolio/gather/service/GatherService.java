@@ -6,15 +6,17 @@ import com.playdata.pdfolio.domain.entity.gather.GatherReply;
 import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteReplyRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteRequest;
+import com.playdata.pdfolio.domain.response.gather.GatherDetailResponse;
 import com.playdata.pdfolio.domain.response.gather.GatherResponse;
 import com.playdata.pdfolio.gather.repository.GatherCommentRepository;
 import com.playdata.pdfolio.gather.repository.GatherReplyRepository;
 import com.playdata.pdfolio.gather.repository.GatherRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -66,16 +68,21 @@ public class GatherService {
     }
 
     // 모집글 상세 보기
-    public GatherResponse detailGather(Long id){
+    public GatherDetailResponse detailGather(Long id){
         Optional<Gather> byId = gatherRepository.findByGather(id);
         Gather gather = byId.orElseThrow(() ->
                 new RuntimeException("Not Found Gather" + id));
-        return new GatherResponse(gather);
+        return new GatherDetailResponse(gather);
     }
     // 모집글 전체 보기
-    public void allGather(Long id){
-
+    public Page<GatherResponse> allGather(PageRequest request){
+        Page<Gather> all = gatherRepository.findAll(request);
+        return all.map(GatherResponse::new);
     }
+
+    // 제목 , 글 내용 , 스킬 ,모집중 검색
+    // 카테고리 검색
+
 // -----------------------------------------------------------------------------
     // 코멘트 작성
     public void writeGatherComment(WriteCommentRequest writeCommentRequest){
