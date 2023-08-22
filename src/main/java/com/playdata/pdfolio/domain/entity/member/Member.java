@@ -22,4 +22,9 @@ public class Member extends BaseEntity {
     private String imageUrl;
     @OneToMany(mappedBy = "member")
     private Set<MemberSkill> skills = new HashSet<>();
+
+    public void update(String nickName, String imageUrl){
+        this.nickName = nickName;
+        this.imageUrl = imageUrl;
+    }
 }
