@@ -5,11 +5,10 @@ import com.playdata.pdfolio.domain.entity.heart.GatherHeart;
 import com.playdata.pdfolio.domain.entity.heart.ProjectHeart;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.domain.entity.project.Project;
-import com.playdata.pdfolio.domain.reqeuest.heart.HeartRequest;
-import com.playdata.pdfolio.gather.GatherRepository;
+import com.playdata.pdfolio.gather.repository.GatherRepository;
 import com.playdata.pdfolio.heart.repository.GatherHeartRepository;
 import com.playdata.pdfolio.heart.repository.ProjectHeartRepository;
-import com.playdata.pdfolio.project.ProjectRepository;
+import com.playdata.pdfolio.project.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 @RequiredArgsConstructor

@@ -1,5 +1,6 @@
 package com.playdata.pdfolio.gather.controller;
 
+import com.playdata.pdfolio.domain.dto.gather.SearchDto;
 import com.playdata.pdfolio.domain.entity.gather.Gather;
 import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
 import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
@@ -42,20 +43,24 @@ public class GatherController {
        return gatherService.detailGather(id);
     }
 
-    // 모집글 전체 보기 / 모집글 제목 , 글 내용 , 카테고리 검색
+    // 모집글 전체 보기 / 모집글 제목 , 글 내용 , 카테고리 , 스킬 검색
     @GetMapping
     public Page<GatherResponse> allGather(
             @RequestParam(required = false,defaultValue = "0",name = "page")
             Integer page,
             @RequestParam(required = false,defaultValue = "8",name = "size")
             Integer size,
-            @RequestParam(required = false,defaultValue = "",name = "keyword")
-            String keyword,
-            @RequestParam(required = false,defaultValue = "",name = "category")
-            GatherCategory category
+//            @RequestParam(required = false,defaultValue = "",name = "keyword")
+//            String keyword,
+//            @RequestParam(required = false,defaultValue = "",name = "category")
+//            GatherCategory category,
+//            @RequestParam(required = false,defaultValue = "",name = "skill")
+//            GatherCategory skills
+            SearchDto searchDto
             ) {
         PageRequest request = PageRequest.of(page, size);
-        return gatherService.allGather(request, keyword, category);
+//        return gatherService.allGather(request, keyword, category);
+        return gatherService.allGather(request, searchDto);
     }
 
 

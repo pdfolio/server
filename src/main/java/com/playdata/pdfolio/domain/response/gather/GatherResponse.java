@@ -5,6 +5,7 @@ import com.playdata.pdfolio.domain.entity.gather.Gather;
 import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
 import com.playdata.pdfolio.domain.entity.gather.GatherSkill;
 import com.playdata.pdfolio.domain.entity.member.Member;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,10 +33,11 @@ public class GatherResponse {
     private Integer viewCount;
     private Boolean isDeleted;
 
-    private Member member;
+    private Long memberId;
+    private String memberName;
+    private String memberImageUrl;
 
     private Set<GatherSkill> skills;
-
 
     public GatherResponse(Gather gather) {
         this.id = gather.getId();
@@ -47,9 +50,14 @@ public class GatherResponse {
         this.contact = gather.getContact();
         this.heartCount = gather.getHeartCount();
         this.viewCount = gather.getViewCount();
-        this.member = gather.getMember();
-
+        this.memberId = gather.getMember().getId();
+        this.memberName = gather.getMember().getNickName();
+        this.memberImageUrl = gather.getMember().getImageUrl();
     }
 
-
+    public static List<GatherResponse> of(List<Gather> gathers) {
+        return gathers.stream()
+                .map(GatherResponse::new)
+                .toList();
+    }
 }
