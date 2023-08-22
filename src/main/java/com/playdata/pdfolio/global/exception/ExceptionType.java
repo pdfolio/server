@@ -1,5 +1,6 @@
 package com.playdata.pdfolio.global.exception;
 
+import com.playdata.pdfolio.project.exception.InValidProjectSearchTypeException;
 import com.playdata.pdfolio.project.exception.InValidUrlTypeException;
 import com.playdata.pdfolio.auth.exception.AccessTokenExpiredException;
 import com.playdata.pdfolio.auth.exception.InvalidTokenException;
@@ -29,7 +30,10 @@ public enum ExceptionType {
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다.",InvalidTokenException .class),
     ACCESS_TOKEN_EXPIRE(HttpStatus.FORBIDDEN, "액세스 토큰이 만료되었습니다.", AccessTokenExpiredException.class),
     UNREGISTERED_MEMBER(HttpStatus.ACCEPTED, "가입되지 않은 멤버입니다.", UnregisteredMemberException.class),
-    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "멤버를 찾을 수 없습니댜.", MemberNotFoundException.class);
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "멤버를 찾을 수 없습니댜.", MemberNotFoundException.class),
+
+    INVALID_PROJECT_SEARCH_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 프로젝트 검색 타입입니다.",InValidProjectSearchTypeException .class),
+    ;
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -24,23 +24,24 @@ public class ProjectService {
     private final ProjectSkillRepository projectSkillRepository;
 
     @Transactional
-    public ProjectCreateResponse save(ProjectCreateRequest request, Long memberId) {
-//        Member member = Member.getMemberProxy(memberId);
-//        Project project = createProject(request, member);
-//        List<Skill> skills = Skill.of(request.getProjectSkills());
-//
-//        Project savedProject = projectRepository.save(project);
-//
-//        List<ProjectSkill> projectSkills = createProjectSkills(savedProject, skills);
-//        projectSkillRepository.saveAll(projectSkills);
+    public ProjectCreateResponse save(final ProjectCreateRequest request, final Long memberId) {
+        Member member = Member.builder()
+                .id(memberId)
+                .build();
 
-//        return ProjectCreateResponse.of(savedProject);
+        Project project = createProject(request, member);
+        List<Skill> skills = Skill.of(request.getProjectSkills());
 
-        return null;
+        Project savedProject = projectRepository.save(project);
+
+        List<ProjectSkill> projectSkills = createProjectSkills(savedProject, skills);
+        projectSkillRepository.saveAll(projectSkills);
+
+        return ProjectCreateResponse.of(savedProject);
     }
 
 
-    private List<ProjectSkill> createProjectSkills(Project project, List<Skill> skills) {
+    private List<ProjectSkill> createProjectSkills(final Project project, final List<Skill> skills) {
         return skills.stream()
                 .map(skill -> ProjectSkill.builder()
                                 .project(project)
@@ -49,7 +50,7 @@ public class ProjectService {
                 .toList();
     }
 
-    private Project createProject(ProjectCreateRequest request, Member member) {
+    private Project createProject(final ProjectCreateRequest request, final Member member) {
         return Project.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
