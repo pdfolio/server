@@ -1,12 +1,12 @@
 package com.playdata.pdfolio.auth.controller;
 
 import com.playdata.pdfolio.auth.service.AuthService;
-import com.playdata.pdfolio.domain.dto.jwt.JwtDto;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import com.playdata.pdfolio.domain.dto.jwt.TokenDto;
+import com.playdata.pdfolio.domain.request.auth.AuthRequest;
+import com.playdata.pdfolio.domain.request.auth.TokenRenewRequest;
+import com.playdata.pdfolio.domain.response.auth.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,19 +15,17 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    @GetMapping("/renew")
+
+    @PostMapping("/me")
     @ResponseStatus(HttpStatus.OK)
-    public JwtDto renewToken(
-            @CookieValue(value = "refreshToken") Cookie refreshToken,
-            HttpServletResponse response)
+    public AuthResponse verify(@RequestBody AuthRequest authRequest){
+        return authService.verify(authRequest);
+    }
+
+    @PostMapping("/renew")
+    @ResponseStatus(HttpStatus.OK)
+    public TokenDto renew(@RequestBody TokenRenewRequest tokenRenewRequest)
     {
-        JwtDto jwtTokenDto = authService.renew(refreshToken.getValue());
-        Cookie cookie = new Cookie("refreshToken", jwtTokenDto.refreshToken());
-
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-
-        response.addCookie(cookie);
-        return jwtTokenDto;
+        return authService.renew(tokenRenewRequest);
     }
 }
