@@ -1,8 +1,10 @@
 package com.playdata.pdfolio.project.controller;
 
 import com.playdata.pdfolio.domain.request.project.ProjectCreateRequest;
+import com.playdata.pdfolio.domain.request.project.ProjectSearchParameter;
 import com.playdata.pdfolio.domain.response.project.ProjectCreateResponse;
 import com.playdata.pdfolio.domain.response.project.ProjectListResponse;
+import com.playdata.pdfolio.project.resolver.ProjectSearchParams;
 import com.playdata.pdfolio.project.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +34,11 @@ public class ProjectController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ProjectListResponse> search() {
-
+    public ResponseEntity<ProjectListResponse> search(@ProjectSearchParams ProjectSearchParameter projectSearchParameter) {
+        System.out.println("projectSearchParameter = " + projectSearchParameter.getPage());
+        System.out.println("projectSearchParameter = " + projectSearchParameter.getSize());
+        System.out.println("projectSearchParameter = " + projectSearchParameter.getSortType().getValue());
+        System.out.println("projectSearchParameter = " + projectSearchParameter.getSkillCategory().getSkillCategory());
         return null;
     }
 }

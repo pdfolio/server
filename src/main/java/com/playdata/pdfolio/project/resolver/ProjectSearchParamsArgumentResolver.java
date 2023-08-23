@@ -1,5 +1,6 @@
 package com.playdata.pdfolio.project.resolver;
 
+import com.playdata.pdfolio.domain.request.project.ProjectSearchParameter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -41,9 +42,15 @@ public class ProjectSearchParamsArgumentResolver implements HandlerMethodArgumen
             parameterMap.put(name, nativeRequest.getParameter(name));
         }
 
+        // parameterMap = {size=10, page=0, sort=createdAt, category=react,java}
         log.info("parameterMap = {}", parameterMap);
 
-        return null;
+        return ProjectSearchParameter.of(
+                parameterMap.getOrDefault("page", "1"),
+                parameterMap.getOrDefault("size", "10"),
+                parameterMap.getOrDefault("sort", "createdAt"),
+                parameterMap.getOrDefault("category", null)
+        );
     }
 
 }

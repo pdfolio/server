@@ -30,4 +30,5 @@ public enum ProjectSearchSortType {
                 .findFirst()
                 .orElseThrow(InValidProjectSearchTypeException::new);
     }
+
 }
