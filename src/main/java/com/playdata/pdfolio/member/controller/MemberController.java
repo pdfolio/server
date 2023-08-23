@@ -3,11 +3,11 @@ package com.playdata.pdfolio.member.controller;
 import com.playdata.pdfolio.auth.UserInfo;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.domain.request.member.UpdateRequest;
+import com.playdata.pdfolio.domain.response.member.MemberResponse;
 import com.playdata.pdfolio.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,21 +18,28 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public Member test(@AuthenticationPrincipal UserInfo userInfo){
-        return userInfo.getMember();
+    @ResponseStatus(HttpStatus.OK)
+    public MemberResponse me(@AuthenticationPrincipal UserInfo userInfo){
+        Member member = memberService.findById(userInfo.getMemberId());
+        return MemberResponse.from(member);
     }
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void updateBasic(@RequestBody UpdateRequest updateRequest){
-        Long id = 1L;
-        memberService.updateBasic(id, updateRequest);
+    public void updateBasic(
+            @AuthenticationPrincipal UserInfo userInfo,
+            @RequestBody UpdateRequest updateRequest){
+        memberService.updateBasic(userInfo.getMemberId(), updateRequest);
     }
 
     @PutMapping("/all")
     @ResponseStatus(HttpStatus.CREATED)
-    public void updateContainSkills(@RequestBody UpdateRequest updateRequest){
-        Long id = 1L;
-        memberService.updateContainSkills(id, updateRequest);
+    public void updateContainSkills(
+            @AuthenticationPrincipal UserInfo userInfo,
+            @RequestBody UpdateRequest updateRequest)
+    {
+        memberService.updateContainSkills(
+                userInfo.getMemberId(),
+                updateRequest);
     }
 
 }
