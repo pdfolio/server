@@ -6,10 +6,15 @@ import com.playdata.pdfolio.domain.entity.project.Project;
 import com.playdata.pdfolio.domain.entity.project.ProjectSkill;
 import com.playdata.pdfolio.domain.entity.project.Url;
 import com.playdata.pdfolio.domain.request.project.ProjectCreateRequest;
+import com.playdata.pdfolio.domain.request.project.ProjectSearchParameter;
 import com.playdata.pdfolio.domain.response.project.ProjectCreateResponse;
+import com.playdata.pdfolio.domain.response.project.ProjectListResponse;
+import com.playdata.pdfolio.domain.response.project.ProjectResponse;
 import com.playdata.pdfolio.project.repository.ProjectRepository;
 import com.playdata.pdfolio.project.repository.ProjectSkillRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,5 +65,10 @@ public class ProjectService {
                 .thumbNailUrl(Url.of(request.getThumbNailUrl()))
                 .member(member)
                 .build();
+    }
+
+    public ProjectListResponse search(ProjectSearchParameter searchParameter) {
+        Page<ProjectResponse> result = projectRepository.findAllProjectByCondition(searchParameter);
+        return ProjectListResponse.of(result);
     }
 }

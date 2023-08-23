@@ -34,11 +34,8 @@ public class ProjectController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ProjectListResponse> search(@ProjectSearchParams ProjectSearchParameter projectSearchParameter) {
-        System.out.println("projectSearchParameter = " + projectSearchParameter.getPage());
-        System.out.println("projectSearchParameter = " + projectSearchParameter.getSize());
-        System.out.println("projectSearchParameter = " + projectSearchParameter.getSortType().getValue());
-        System.out.println("projectSearchParameter = " + projectSearchParameter.getSkillCategory().getSkillCategory());
-        return null;
+    public ResponseEntity<ProjectListResponse> search(@ProjectSearchParams ProjectSearchParameter searchParameter) {
+        ProjectListResponse response = projectService.search(searchParameter);
+        return ResponseEntity.ok(response);
     }
 }

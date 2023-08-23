@@ -1,9 +1,11 @@
 package com.playdata.pdfolio.domain.response.project;
 
 import com.playdata.pdfolio.domain.entity.project.Project;
+import com.playdata.pdfolio.domain.response.member.MemberInfoResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -15,13 +17,13 @@ public class ProjectResponse {
     private String description;
     private Integer heartCount;
     private Integer viewCount;
-    private Integer commentCount;
+    private Long commentCount;
     private String thumbNailUrl;
+    private String createdAt;
 
     private List<ProjectSkillResponse> projectSkills;
 
-    private Long memberId;
-    private String memberName;
+    private MemberInfoResponse author;
 
     public ProjectResponse(
             final Long projectId,
@@ -29,11 +31,11 @@ public class ProjectResponse {
             final String description,
             final Integer heartCount,
             final Integer viewCount,
-            final Integer commentCount,
+            final Long commentCount,
             final String thumbNailUrl,
+            final LocalDateTime createdAt,
             final List<ProjectSkillResponse> projectSkills,
-            final Long memberId,
-            final String memberName) {
+            final MemberInfoResponse memberInfoResponse) {
         this.projectId = projectId;
         this.title = title;
         this.description = description;
@@ -41,14 +43,12 @@ public class ProjectResponse {
         this.viewCount = viewCount;
         this.commentCount = commentCount;
         this.thumbNailUrl = thumbNailUrl;
+        this.createdAt = createdAt.toString();
         this.projectSkills = projectSkills;
-        this.memberId = memberId;
-        this.memberName = memberName;
+        this.author = memberInfoResponse;
     }
 
     public static ProjectResponse of(final Project project) {
-        List<ProjectSkillResponse> projectSkills = ProjectSkillResponse.of(project.getSkills());
-
         return new ProjectResponse(
                 project.getId(),
                 project.getTitle(),
@@ -57,9 +57,17 @@ public class ProjectResponse {
                 project.getViewCount(),
                 project.getCommentCount(),
                 project.getThumbNailUrl().getUrl(),
-                projectSkills,
-                project.getMember().getId(),
-                project.getMember().getName()
+                project.getCreatedAt(),
+                getProjectSkills(project),
+                getMemberInfoResponse(project)
         );
+    }
+
+    private static List<ProjectSkillResponse> getProjectSkills(Project project) {
+        return ProjectSkillResponse.of(project.getSkills());
+    }
+
+    private static MemberInfoResponse getMemberInfoResponse(Project project) {
+        return MemberInfoResponse.of(project.getMember());
     }
 }

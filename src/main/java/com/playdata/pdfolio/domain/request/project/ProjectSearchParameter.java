@@ -6,10 +6,11 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProjectSearchParameter {
 
     private static final int MIN_PAGE = 1;
@@ -19,6 +20,15 @@ public class ProjectSearchParameter {
     private int size;
     private ProjectSearchSortType sortType;
     private ProjectSearchSkillCategory skillCategory;
+    private Pageable pageable;
+
+    private ProjectSearchParameter(int page, int size, ProjectSearchSortType sortType, ProjectSearchSkillCategory skillCategory) {
+        this.page = page;
+        this.size = size;
+        this.sortType = sortType;
+        this.skillCategory = skillCategory;
+        this.pageable = PageRequest.of(page - 1, size);
+    }
 
     public static ProjectSearchParameter of(String page, String size, String sortType, String skillCategory) {
         return new ProjectSearchParameter(

@@ -1,14 +1,9 @@
 package com.playdata.pdfolio.project.repository;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import com.playdata.pdfolio.domain.request.project.ProjectSearchParameter;
+import com.playdata.pdfolio.domain.response.project.ProjectResponse;
+import org.springframework.data.domain.Page;
 
-@Repository
-@RequiredArgsConstructor
-public class ProjectSearchRepository {
-
-    private final JPAQueryFactory jpaQueryFactory;
-
-
+public interface ProjectSearchRepository {
+    Page<ProjectResponse> findAllProjectByCondition(ProjectSearchParameter searchParameter);
 }
