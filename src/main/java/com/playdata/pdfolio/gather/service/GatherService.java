@@ -31,13 +31,12 @@ public class GatherService {
     private final GatherCommentRepository gatherCommentRepository;
     private final GatherReplyRepository gatherReplyRepository;
     private final GatherSkillRepository gatherSkillRepository;
-    private final GatherSearchRepository gatherSearchRepository;
 
     
     // 모집글 작성
-    public void writeGather(WriteRequest writeRequest){
+    public void writeGather(WriteRequest writeRequest,Long memberId){
 
-        Gather gather = gatherRepository.save(writeRequest.toEntity());
+        Gather gather = gatherRepository.save(writeRequest.toEntity(memberId));
 
         List<Skill> skills = Skill.of(writeRequest.gatherSkill());
         List<GatherSkill> gatherSkills = createGatherSkills(gather, skills);
@@ -54,7 +53,7 @@ public class GatherService {
     }
     
     // 모집글 수정
-    public void modifyGather(WriteRequest writeRequest,Long id){
+    public void modifyGather(WriteRequest writeRequest,Long id,Long memberId){
         Optional<Gather> optionalGather = gatherRepository.findById(id);
 
         if (optionalGather.isPresent()) { //  있는지 확인하고 실행
@@ -93,15 +92,9 @@ public class GatherService {
         return new GatherDetailResponse(gather);
     }
 
-//    // 모집글 전체 보기 / 모집글 제목 , 글 내용 , 카테고리 검색
-//    public Page<GatherResponse> allGather(PageRequest request, String keyword, GatherCategory category){
-//        Page<Gather> all = gatherRepository.findSearchKeyword(request,keyword,category);
-//        return all.map(GatherResponse::new);
-//    }
-
     // 모집글 전체 보기 / 모집글 제목 , 글 내용 , 카테고리 검색
     public Page<GatherResponse> allGather(PageRequest request, SearchDto searchDto){
-        Page<GatherResponse> all = gatherSearchRepository.findAllByCondition(request,searchDto);
+        Page<GatherResponse> all = gatherRepository.findAllByCondition(request,searchDto);
         return all;
     }
 
@@ -109,8 +102,8 @@ public class GatherService {
 
 // -----------------------------------------------------------------------------
     // 코멘트 작성
-    public void writeGatherComment(WriteCommentRequest writeCommentRequest){
-        gatherCommentRepository.save(writeCommentRequest.toEntity());
+    public void writeGatherComment(WriteCommentRequest writeCommentRequest,Long memberId){
+        gatherCommentRepository.save(writeCommentRequest.toEntity(memberId));
     }
 
     // 코멘트 수정
@@ -134,8 +127,8 @@ public class GatherService {
     }
 // -----------------------------------------------------------------------------
     // 리플라이 작성
-    public void writeGatherReply(WriteReplyRequest writeReplyRequest){
-        gatherReplyRepository.save(writeReplyRequest.toEntity());
+    public void writeGatherReply(WriteReplyRequest writeReplyRequest,Long memberId){
+        gatherReplyRepository.save(writeReplyRequest.toEntity(memberId));
     }
     // 리플라이 수정
     public void modifyGatherReply(WriteReplyRequest writeReplyRequest,Long id){

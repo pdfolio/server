@@ -1,6 +1,8 @@
 package com.playdata.pdfolio.domain.response.gather;
 
 import com.playdata.pdfolio.domain.dto.gather.CommentDto;
+import com.playdata.pdfolio.domain.dto.gather.GatherSkillDto;
+import com.playdata.pdfolio.domain.entity.common.Skill;
 import com.playdata.pdfolio.domain.entity.gather.Gather;
 import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
 import com.playdata.pdfolio.domain.entity.gather.GatherSkill;
@@ -37,7 +39,7 @@ public class GatherResponse {
     private String memberName;
     private String memberImageUrl;
 
-    private Set<GatherSkill> skills;
+    private List<GatherSkillDto> skills;
 
     public GatherResponse(Gather gather) {
         this.id = gather.getId();
@@ -53,7 +55,9 @@ public class GatherResponse {
         this.memberId = gather.getMember().getId();
         this.memberName = gather.getMember().getNickName();
         this.memberImageUrl = gather.getMember().getImageUrl();
+        this.skills = gather.getSkills().stream().map(GatherSkillDto::new).toList();
     }
+
 
     public static List<GatherResponse> of(List<Gather> gathers) {
         return gathers.stream()

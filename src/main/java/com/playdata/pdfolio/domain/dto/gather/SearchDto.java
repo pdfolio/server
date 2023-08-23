@@ -1,6 +1,10 @@
 package com.playdata.pdfolio.domain.dto.gather;
 
+import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
+import com.playdata.pdfolio.domain.entity.gather.GatherSkill;
 import lombok.*;
+
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -9,9 +13,7 @@ import lombok.*;
 @Getter
 @Setter
 public class SearchDto {
-    private String title;
-    private String content;
-    private Boolean isDone;
-    private Integer likeGoe;
-    private Integer likeLoe;
+    private String keyword;
+    private GatherCategory category;
+    private String skills;
 }

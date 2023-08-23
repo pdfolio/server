@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record WriteRequest(
-        Long memberId,
         String title,
         String content,
         LocalDate startDate,
@@ -20,7 +19,7 @@ public record WriteRequest(
         String contact,
         List<String> gatherSkill
 ) {
-    public Gather toEntity(){
+    public Gather toEntity(Long memberId){
         return Gather.builder()
                 .member(Member.builder().id(memberId).build())
                 .title(title)
