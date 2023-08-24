@@ -50,7 +50,11 @@ public class Oauth2Service {
                 .orElseThrow(UnregisteredMemberException::new);
 
         TokenDto token = authService.createToken(member);
-        LoginInfoDto loginInfoDto = new LoginInfoDto(providerName, userInfo.getUserName(), member.getNickName());
+        LoginInfoDto loginInfoDto = new LoginInfoDto(
+                member.getId(),
+                providerName,
+                userInfo.getUserName(),
+                member.getNickName());
         return new Oauth2Response(loginInfoDto, token);
     }
 
@@ -76,7 +80,11 @@ public class Oauth2Service {
         memberSkillRepository.saveAll(memberSkills);
 
         TokenDto token = authService.createToken(member);
-        LoginInfoDto loginInfoDto = new LoginInfoDto(providerName, userInfo.getUserName(), member.getNickName());
+        LoginInfoDto loginInfoDto = new LoginInfoDto(
+                member.getId(),
+                providerName,
+                userInfo.getUserName(),
+                member.getNickName());
         return new Oauth2Response(loginInfoDto, token);
     }
 
