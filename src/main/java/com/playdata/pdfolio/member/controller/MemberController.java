@@ -3,6 +3,7 @@ package com.playdata.pdfolio.member.controller;
 import com.playdata.pdfolio.auth.UserInfo;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.domain.request.member.UpdateRequest;
+import com.playdata.pdfolio.domain.request.project.ProjectCreateRequest;
 import com.playdata.pdfolio.domain.response.member.MemberResponse;
 import com.playdata.pdfolio.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,17 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+
+    @PostMapping
+    public ProjectCreateRequest test(@RequestBody ProjectCreateRequest projectCreateRequest){
+        return projectCreateRequest;
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void withdraw(@AuthenticationPrincipal UserInfo userInfo){
+        memberService.withdraw(userInfo.getMemberId());
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
