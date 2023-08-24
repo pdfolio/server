@@ -18,10 +18,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static com.playdata.pdfolio.domain.entity.gather.QGather.gather;
 import static com.playdata.pdfolio.domain.entity.gather.QGatherSkill.*;
 import static com.playdata.pdfolio.domain.entity.member.QMember.member;
+import static com.playdata.pdfolio.domain.entity.gather.QGatherComment.gatherComment;
+import static com.playdata.pdfolio.domain.entity.gather.QGatherReply.gatherReply;
 
 public class GatherSearchRepositoryImpl implements GatherSearchRepository{
     private final JPAQueryFactory queryFactory;
@@ -71,6 +74,23 @@ public class GatherSearchRepositoryImpl implements GatherSearchRepository{
                 .fetchOne();
 
         return new PageImpl<>(gatherResponses, request, totalSize);
+    }
+
+    @Override
+    public Gather findByIdIncludingUndeletedComments(Long id) {
+        BooleanExpression isCommentDeletedFalse = gatherComment.isDeleted.isFalse();
+        BooleanExpression isReplyDeletedFalse = gatherReply.isDeleted.isFalse();
+        return queryFactory
+                .selectFrom(gather)
+                .distinct()
+                .leftJoin(gather.skills)
+                .leftJoin(gather.comments, gatherComment)
+                .fetchJoin()
+                .where(
+                        gather.id.eq(id),
+                        isCommentDeletedFalse
+                )
+                .fetchOne();
     }
 
     private BooleanExpression keywordContains(String keyword) {

@@ -18,11 +18,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping
-    public ProjectCreateRequest test(@RequestBody ProjectCreateRequest projectCreateRequest){
-        return projectCreateRequest;
-    }
-
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
     public void withdraw(@AuthenticationPrincipal UserInfo userInfo){
@@ -32,7 +27,7 @@ public class MemberController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public MemberResponse me(@AuthenticationPrincipal UserInfo userInfo){
-        Member member = memberService.findById(userInfo.getMemberId());
+        Member member = memberService.findByIdFetchMemberSkill(userInfo.getMemberId());
         return MemberResponse.from(member);
     }
     @PutMapping
