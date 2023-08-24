@@ -20,9 +20,7 @@ public class ProjectResponse {
     private Long commentCount;
     private String thumbNailUrl;
     private String createdAt;
-
     private List<ProjectSkillResponse> projectSkills;
-
     private MemberInfoResponse author;
 
     public ProjectResponse(
