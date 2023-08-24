@@ -1,5 +1,6 @@
 package com.playdata.pdfolio.gather.controller;
 
+
 import com.playdata.pdfolio.domain.dto.gather.SearchDto;
 import com.playdata.pdfolio.domain.entity.gather.Gather;
 import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
@@ -12,15 +13,17 @@ import com.playdata.pdfolio.gather.service.GatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/gathers")
+@RequestMapping("/api/v1/gather")
 public class GatherController {
     private final GatherService gatherService;
 
     // 모집글 작성
+
     @PostMapping("/{memberId}")
     public void GatherWrite(@RequestBody WriteRequest writeRequest,
                             @PathVariable(name = "memberId") Long memberId){

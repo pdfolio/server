@@ -3,7 +3,9 @@ package com.playdata.pdfolio.oauth2.service;
 import com.playdata.pdfolio.auth.service.AuthService;
 import com.playdata.pdfolio.domain.dto.jwt.TokenDto;
 import com.playdata.pdfolio.domain.dto.oauth2.LoginInfoDto;
+import com.playdata.pdfolio.domain.entity.common.Skill;
 import com.playdata.pdfolio.domain.entity.member.Member;
+import com.playdata.pdfolio.domain.entity.member.MemberSkill;
 import com.playdata.pdfolio.domain.entity.oauth2.Oauth2AccessToken;
 import com.playdata.pdfolio.domain.entity.oauth2.Oauth2UserInfo;
 import com.playdata.pdfolio.domain.request.oauth2.LoginRequest;
@@ -12,6 +14,7 @@ import com.playdata.pdfolio.domain.response.oauth2.Oauth2Response;
 import com.playdata.pdfolio.domain.response.oauth2.Oauth2StatusResponse;
 import com.playdata.pdfolio.member.exception.UnregisteredMemberException;
 import com.playdata.pdfolio.member.repository.MemberRepository;
+import com.playdata.pdfolio.member.repository.MemberSkillRepository;
 import com.playdata.pdfolio.oauth2.provider.Oauth2Provider;
 import com.playdata.pdfolio.oauth2.provider.ProviderFactory;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +27,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +38,7 @@ public class Oauth2Service {
     private final ProviderFactory providerFactory;
     private final AuthService authService;
     private final MemberRepository memberRepository;
-
+    private final MemberSkillRepository memberSkillRepository;
 
 
     public Oauth2Response login(String providerName, LoginRequest loginRequest){
@@ -48,7 +50,7 @@ public class Oauth2Service {
                 .orElseThrow(UnregisteredMemberException::new);
 
         TokenDto token = authService.createToken(member);
-        LoginInfoDto loginInfoDto = new LoginInfoDto(providerName, userInfo.getUserName());
+        LoginInfoDto loginInfoDto = new LoginInfoDto(providerName, userInfo.getUserName(), member.getNickName());
         return new Oauth2Response(loginInfoDto, token);
     }
 
@@ -62,11 +64,19 @@ public class Oauth2Service {
                         .providerId(userInfo.getProviderId())
                         .providerName(userInfo.getProviderName())
                         .imageUrl(signupRequest.imageUrl())
-//                        .skills(signupRequest.skills()) // TODO 스킬 세팅하는거 ..
                         .build());
 
+        Set<MemberSkill> memberSkills = Skill.of(signupRequest.skills()).stream()
+                .map(skill -> MemberSkill.builder()
+                        .skill(skill)
+                        .member(member)
+                        .build())
+                .collect(Collectors.toSet());
+
+        memberSkillRepository.saveAll(memberSkills);
+
         TokenDto token = authService.createToken(member);
-        LoginInfoDto loginInfoDto = new LoginInfoDto(providerName, userInfo.getUserName());
+        LoginInfoDto loginInfoDto = new LoginInfoDto(providerName, userInfo.getUserName(), member.getNickName());
         return new Oauth2Response(loginInfoDto, token);
     }
 

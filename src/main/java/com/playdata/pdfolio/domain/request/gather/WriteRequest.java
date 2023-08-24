@@ -15,9 +15,10 @@ public record WriteRequest(
         LocalDate startDate,
         LocalDate closeDate,
         Long teamSize,
-        @Enumerated(EnumType.STRING) GatherCategory category,
+        @Enumerated(EnumType.STRING)
+        GatherCategory category,
         String contact,
-        List<String> gatherSkill
+        List<String> skills
 ) {
     public Gather toEntity(Long memberId){
         return Gather.builder()

@@ -10,4 +10,6 @@ public interface LoginTokenRepository extends JpaRepository<LoginToken, Long> {
 
     Optional<LoginToken> findByRefreshToken(String refreshToken);
     Optional<LoginToken> findByMember(Member member);
+
+    void deleteByMember(Member member);
 }

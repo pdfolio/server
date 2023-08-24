@@ -1,5 +1,6 @@
 package com.playdata.pdfolio.gather.service;
 
+
 import com.playdata.pdfolio.domain.dto.gather.SearchDto;
 import com.playdata.pdfolio.domain.entity.common.Skill;
 import com.playdata.pdfolio.domain.entity.gather.*;
@@ -10,6 +11,7 @@ import com.playdata.pdfolio.domain.request.gather.WriteReplyRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteRequest;
 import com.playdata.pdfolio.domain.response.gather.GatherDetailResponse;
 import com.playdata.pdfolio.domain.response.gather.GatherResponse;
+
 import com.playdata.pdfolio.gather.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.playdata.pdfolio.domain.entity.project.QProject.project;
 
@@ -31,6 +35,7 @@ public class GatherService {
     private final GatherCommentRepository gatherCommentRepository;
     private final GatherReplyRepository gatherReplyRepository;
     private final GatherSkillRepository gatherSkillRepository;
+
 
     
     // 모집글 작성

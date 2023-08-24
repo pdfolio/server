@@ -4,6 +4,7 @@ import com.playdata.pdfolio.domain.entity.common.Skill;
 import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.domain.entity.member.MemberSkill;
 import com.playdata.pdfolio.domain.request.member.UpdateRequest;
+import com.playdata.pdfolio.jwt.repository.LoginTokenRepository;
 import com.playdata.pdfolio.member.exception.MemberNotFoundException;
 import com.playdata.pdfolio.member.repository.MemberRepository;
 import com.playdata.pdfolio.member.repository.MemberSkillRepository;
@@ -21,6 +22,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
+    private final LoginTokenRepository loginTokenRepository;
 
     public Member findById(Long id){
         return memberRepository
@@ -56,5 +58,13 @@ public class MemberService {
                 .collect(Collectors.toList());
 
         memberSkillRepository.saveAll(newSkills);
+    }
+
+    public void withdraw(Long memberId) {
+        Member member = findById(memberId);
+
+        loginTokenRepository.deleteByMember(member);
+        memberSkillRepository.deleteByMember(member);
+        memberRepository.delete(member);
     }
 }
