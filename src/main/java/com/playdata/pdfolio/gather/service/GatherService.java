@@ -1,9 +1,8 @@
 package com.playdata.pdfolio.gather.service;
 
-import com.playdata.pdfolio.domain.entity.gather.Gather;
-import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
-import com.playdata.pdfolio.domain.entity.gather.GatherComment;
-import com.playdata.pdfolio.domain.entity.gather.GatherReply;
+import com.playdata.pdfolio.domain.entity.common.Skill;
+import com.playdata.pdfolio.domain.entity.gather.*;
+import com.playdata.pdfolio.domain.entity.member.Member;
 import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteReplyRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteRequest;
@@ -12,14 +11,18 @@ import com.playdata.pdfolio.domain.response.gather.GatherResponse;
 import com.playdata.pdfolio.gather.repository.GatherCommentRepository;
 import com.playdata.pdfolio.gather.repository.GatherReplyRepository;
 import com.playdata.pdfolio.gather.repository.GatherRepository;
+import com.playdata.pdfolio.gather.repository.GatherSkillRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,12 +31,24 @@ public class GatherService {
     private final GatherRepository gatherRepository;
     private final GatherCommentRepository gatherCommentRepository;
     private final GatherReplyRepository gatherReplyRepository;
+    private final GatherSkillRepository gatherSkillRepository;
     
     // 모집글 작성
-    public void writeGather(WriteRequest writeRequest){
+    public void writeGather(Long memberId, WriteRequest writeRequest){
 
-        Gather save = gatherRepository.save(writeRequest.toEntity());
-//            writeRequest.gatherSkill(); 스킬 배열 하나씩 저장해야됨
+        Gather gather = writeRequest.toEntity(memberId);
+
+        gatherRepository.save(gather);
+
+        Set<GatherSkill> gatherSkills = Skill.of(writeRequest.skills())
+                .stream()
+                .map(skill -> GatherSkill.builder()
+                        .gather(gather)
+                        .skill(skill)
+                        .build())
+                .collect(Collectors.toSet());
+
+        gatherSkillRepository.saveAll(gatherSkills);
     }
     
     // 모집글 수정
