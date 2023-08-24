@@ -58,7 +58,7 @@
             this.gatherCommentList = gather.getComments() != null?
                     gather.getComments()
                             .stream()
-                            .map(gatherComment -> new CommentDto(gatherComment))
+                            .map(CommentDto::new)
                             .toList()
                     :new ArrayList<>();
 

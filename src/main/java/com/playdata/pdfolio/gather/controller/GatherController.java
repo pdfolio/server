@@ -92,6 +92,7 @@ public class GatherController {
     }
     // 코멘트 삭제
     @DeleteMapping("/comment/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void GatherCommentDelete(@PathVariable(name = "id") Long id){
         gatherService.deleteGatherComment(id);
     }

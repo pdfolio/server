@@ -24,6 +24,12 @@ public class MemberService {
     private final MemberSkillRepository memberSkillRepository;
     private final LoginTokenRepository loginTokenRepository;
 
+    public Member findByIdFetchMemberSkill(Long id){
+        return memberRepository
+                .findByIdFetchMemberSkill(id)
+                .orElseThrow(MemberNotFoundException::new);
+    }
+
     public Member findById(Long id){
         return memberRepository
                 .findById(id)
