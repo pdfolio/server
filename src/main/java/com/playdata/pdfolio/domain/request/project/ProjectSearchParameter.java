@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProjectSearchParameter {
 
     private static final int MIN_PAGE = 1;

@@ -14,21 +14,16 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProjectSearchSkillCategory {
 
-    private List<String> skillCategory;
+    private List<Skill> skills;
 
     public static ProjectSearchSkillCategory of(String skillCategory) {
-        List<String> validSkillNames = Arrays.stream(skillCategory.split(","))
+        List<Skill> skills = Arrays.stream(skillCategory.split(","))
                 .map(String::trim)
-                .filter(
-                        skillName -> Arrays.stream(Skill.values())
-                        .anyMatch(
-                                skill -> skill.getSkillName().equalsIgnoreCase(skillName)
-                        )
-                )
                 .map(String::toUpperCase)
+                .map(Skill::valueOf)
                 .toList();
 
-        return new ProjectSearchSkillCategory(validSkillNames);
+        return new ProjectSearchSkillCategory(skills);
     }
 
 }

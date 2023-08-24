@@ -14,10 +14,10 @@ public enum ProjectSearchSortType {
     HEART_COUNT("heartCount")
     ;
 
-    private String value;
+    private String type;
 
-    ProjectSearchSortType(String value) {
-        this.value = value;
+    ProjectSearchSortType(String type) {
+        this.type = type;
     }
 
     public static ProjectSearchSortType of(String value) {
@@ -26,7 +26,7 @@ public enum ProjectSearchSortType {
         }
 
         return Arrays.stream(values())
-                .filter(type -> type.value.equals(value))
+                .filter(type -> type.type.equals(value))
                 .findFirst()
                 .orElseThrow(InValidProjectSearchTypeException::new);
     }

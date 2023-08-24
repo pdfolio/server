@@ -4,6 +4,8 @@ import com.playdata.pdfolio.domain.entity.common.Skill;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

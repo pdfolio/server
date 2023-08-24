@@ -8,13 +8,14 @@ import com.playdata.pdfolio.domain.entity.project.Url;
 import com.playdata.pdfolio.domain.request.project.ProjectCreateRequest;
 import com.playdata.pdfolio.domain.request.project.ProjectSearchParameter;
 import com.playdata.pdfolio.domain.response.project.ProjectCreateResponse;
+import com.playdata.pdfolio.domain.response.project.ProjectDetailResponse;
 import com.playdata.pdfolio.domain.response.project.ProjectListResponse;
 import com.playdata.pdfolio.domain.response.project.ProjectResponse;
+import com.playdata.pdfolio.project.exception.ProjectNotFoundException;
 import com.playdata.pdfolio.project.repository.ProjectRepository;
 import com.playdata.pdfolio.project.repository.ProjectSkillRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +46,6 @@ public class ProjectService {
         return ProjectCreateResponse.of(savedProject);
     }
 
-
     private List<ProjectSkill> createProjectSkills(final Project project, final List<Skill> skills) {
         return skills.stream()
                 .map(skill -> ProjectSkill.builder()
@@ -67,8 +67,35 @@ public class ProjectService {
                 .build();
     }
 
-    public ProjectListResponse search(ProjectSearchParameter searchParameter) {
-        Page<ProjectResponse> result = projectRepository.findAllProjectByCondition(searchParameter);
-        return ProjectListResponse.of(result);
+    public ProjectDetailResponse findById(final Long id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        return ProjectDetailResponse.of(project);
+    }
+
+    public ProjectListResponse search(final ProjectSearchParameter searchParameter) {
+        String sortType = searchParameter.getSortType().getType();
+        Page<Project> projects = null;
+        if (sortType.equals("createdAt")) {
+            projects = projectRepository.searchByConditionOrderByCreatedAt(
+                    searchParameter.getSkillCategory().getSkills(),
+                    searchParameter.getPageable()
+            );
+        } else if (sortType.equals("viewCount")) {
+            projects = projectRepository.searchByConditionOrderByViewCount(
+                    searchParameter.getSkillCategory().getSkills(),
+                    searchParameter.getPageable()
+            );
+        } else if (sortType.equals("heartCount")) {
+            projects = projectRepository.searchByConditionOrderByHeartCount(
+                    searchParameter.getSkillCategory().getSkills(),
+                    searchParameter.getPageable()
+            );
+        }
+
+        Page<ProjectResponse> projectResponses = projects.map(ProjectResponse::new);
+
+        return ProjectListResponse.of(projectResponses);
     }
 }

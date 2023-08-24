@@ -1,7 +1,6 @@
 package com.playdata.pdfolio.global.exception;
 
-import com.playdata.pdfolio.project.exception.InValidProjectSearchTypeException;
-import com.playdata.pdfolio.project.exception.InValidUrlTypeException;
+import com.playdata.pdfolio.project.exception.*;
 import com.playdata.pdfolio.auth.exception.AccessTokenExpiredException;
 import com.playdata.pdfolio.auth.exception.InvalidTokenException;
 import com.playdata.pdfolio.auth.exception.TokenNotFoundException;
@@ -9,8 +8,6 @@ import com.playdata.pdfolio.member.exception.MemberNotFoundException;
 import com.playdata.pdfolio.member.exception.UnregisteredMemberException;
 import com.playdata.pdfolio.oauth2.exception.NotSupportedOauth2Exception;
 
-import com.playdata.pdfolio.project.exception.InvalidPageException;
-import com.playdata.pdfolio.project.exception.InvalidSizeException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -37,6 +34,7 @@ public enum ExceptionType {
     INVALID_PROJECT_SEARCH_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 프로젝트 검색 타입입니다.",InValidProjectSearchTypeException .class),
     INVALID_PAGE_EXCEPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 페이지입니다.", InvalidPageException.class),
     INVALID_SIZE_EXCEPTION(HttpStatus.BAD_REQUEST, "유효하지 않은 사이즈입니다.", InvalidSizeException.class),
+    PROJECT_NOT_FOUND(HttpStatus.BAD_REQUEST, "프로젝트를 찾을 수 없습니다.", ProjectNotFoundException.class),
     ;
 
     private final HttpStatus httpStatus;
