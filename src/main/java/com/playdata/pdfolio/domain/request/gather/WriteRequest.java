@@ -7,11 +7,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public record WriteRequest(
-        Long MemberId,
         String title,
         String content,
         LocalDate startDate,
@@ -21,9 +19,9 @@ public record WriteRequest(
         String contact,
         List<String> gatherSkill
 ) {
-    public Gather toEntity(){
+    public Gather toEntity(Long memberId){
         return Gather.builder()
-                .member(Member.builder().id(MemberId).build())
+                .member(Member.builder().id(memberId).build())
                 .title(title)
                 .content(content)
                 .teamSize(teamSize)
