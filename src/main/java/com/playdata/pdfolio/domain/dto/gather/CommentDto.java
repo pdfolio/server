@@ -11,16 +11,17 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentDto {
     private Long id;
+    private String nickName;
     private String content;
     private List<ReplyDto> gatherReplies;
     public CommentDto(GatherComment gatherComment){
         this.id = gatherComment.getId();
+        this.nickName = gatherComment.getMember().getNickName();
         this.content = gatherComment.getContent();
-
         this.gatherReplies = gatherComment.getReplies() != null?
                 gatherComment.getReplies()
                         .stream()
-                        .map(gatherReply -> new ReplyDto(gatherReply))
+                        .map(ReplyDto::new)
                         .toList()
                 :new ArrayList<>();
     }

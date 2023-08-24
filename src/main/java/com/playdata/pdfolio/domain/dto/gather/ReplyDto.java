@@ -9,9 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ReplyDto {
     private Long id;
+    private String nickName;
     private String content;
     public ReplyDto(GatherReply gatherReply){
         this.id = gatherReply.getId();
+        this.nickName = gatherReply.getMember().getNickName();
         this.content = gatherReply.getContent();
     }
 }

@@ -74,12 +74,13 @@ public class GatherController {
 
 // -----------------------------------------------------------------------------
     // 코멘트 작성
-    @PostMapping("/comment/{memberId}")
+    @PostMapping("/comment")
+    @ResponseStatus(HttpStatus.CREATED)
     public void GatherCommentWrite(
             @RequestBody WriteCommentRequest writeCommentRequest,
-            @PathVariable(name = "memberId") Long memberId
+            @AuthenticationPrincipal UserInfo userInfo
     ){
-        gatherService.writeGatherComment(writeCommentRequest,memberId);
+        gatherService.writeGatherComment(writeCommentRequest,userInfo.getMemberId());
     }
     // 코멘트 수정
     @PutMapping("/comment/{id}")
@@ -96,12 +97,13 @@ public class GatherController {
     }
 // -----------------------------------------------------------------------------
     // 리플라이 작성
-    @PostMapping("/reply/{memberId}")
+    @PostMapping("/reply")
+    @ResponseStatus(HttpStatus.CREATED)
     public void GatherReplyWrite(
             @RequestBody WriteReplyRequest writeReplyRequest,
-            @PathVariable(name = "memberId") Long memberId
+            @AuthenticationPrincipal UserInfo userInfo
     ){
-        gatherService.writeGatherReply(writeReplyRequest,memberId);
+        gatherService.writeGatherReply(writeReplyRequest,userInfo.getMemberId());
     }
 
     // 리플라이 수정
