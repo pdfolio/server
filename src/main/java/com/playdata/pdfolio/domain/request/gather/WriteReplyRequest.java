@@ -6,11 +6,10 @@ import com.playdata.pdfolio.domain.entity.gather.GatherReply;
 import com.playdata.pdfolio.domain.entity.member.Member;
 
 public record WriteReplyRequest(
-        Long memberId,
         Long commentId,
         String content
 ) {
-    public GatherReply toEntity(){
+    public GatherReply toEntity(Long memberId){
 
         return GatherReply.builder()
                 .member(Member.builder().id(memberId).build())
