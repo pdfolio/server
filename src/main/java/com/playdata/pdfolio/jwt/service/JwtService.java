@@ -29,7 +29,7 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
     private final SignatureAlgorithm HS256 = SignatureAlgorithm.HS256;
-    private final long ACCESS_TOKEN_VALID_TIME = 3 * 60 * 60 * 1000L; // 3시간
+    private final long ACCESS_TOKEN_VALID_TIME = 3 * 24 * 60 * 60 * 1000L; // 일단 3일로 설정
     private final long REFRESH_TOKEN_VALID_TIME = 3 * 24 * 60 * 60 * 1000L; // 3일
 
     public TokenDto generateToken(Member member){

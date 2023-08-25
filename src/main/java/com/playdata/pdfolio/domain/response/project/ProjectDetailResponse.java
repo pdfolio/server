@@ -4,17 +4,17 @@ import com.playdata.pdfolio.domain.entity.project.Project;
 import com.playdata.pdfolio.domain.response.member.MemberInfoResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class ProjectResponse {
+public class ProjectDetailResponse {
 
     private Long id;
     private String title;
     private String description;
+    private String content;
     private Integer heartCount;
     private Integer viewCount;
     private Long commentCount;
@@ -23,10 +23,13 @@ public class ProjectResponse {
     private List<ProjectSkillResponse> skillStacks;
     private MemberInfoResponse author;
 
-    public ProjectResponse(final Project project) {
+    private List<ProjectCommentResponse> comments;
+
+    private ProjectDetailResponse(final Project project) {
         this.id = project.getId();
         this.title = project.getTitle();
         this.description = project.getDescription();
+        this.content = project.getContent();
         this.heartCount = project.getHeartCount();
         this.viewCount = project.getViewCount();
         this.commentCount = project.getCommentCount();
@@ -37,11 +40,14 @@ public class ProjectResponse {
                 .map(ProjectSkillResponse::of)
                 .toList();
         this.author = MemberInfoResponse.of(project.getMember());
-    }
-
-    public static List<ProjectResponse> of(final Page<Project> projects) {
-        return projects.stream()
-                .map(ProjectResponse::new)
+        this.comments = project.getComments()
+                .stream()
+                .map(ProjectCommentResponse::of)
                 .toList();
     }
+
+    public static ProjectDetailResponse of(final Project project) {
+        return new ProjectDetailResponse(project);
+    }
+
 }

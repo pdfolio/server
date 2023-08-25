@@ -1,16 +1,21 @@
 package com.playdata.pdfolio.gather.service;
 
+
 import com.playdata.pdfolio.domain.dto.gather.SearchDto;
 import com.playdata.pdfolio.domain.entity.common.Skill;
-import com.playdata.pdfolio.domain.entity.gather.*;
-import com.playdata.pdfolio.domain.entity.project.Project;
-import com.playdata.pdfolio.domain.entity.project.ProjectSkill;
+import com.playdata.pdfolio.domain.entity.gather.Gather;
+import com.playdata.pdfolio.domain.entity.gather.GatherComment;
+import com.playdata.pdfolio.domain.entity.gather.GatherReply;
+import com.playdata.pdfolio.domain.entity.gather.GatherSkill;
 import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteReplyRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteRequest;
 import com.playdata.pdfolio.domain.response.gather.GatherDetailResponse;
 import com.playdata.pdfolio.domain.response.gather.GatherResponse;
-import com.playdata.pdfolio.gather.repository.*;
+import com.playdata.pdfolio.gather.repository.GatherCommentRepository;
+import com.playdata.pdfolio.gather.repository.GatherReplyRepository;
+import com.playdata.pdfolio.gather.repository.GatherRepository;
+import com.playdata.pdfolio.gather.repository.GatherSkillRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,8 +26,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static com.playdata.pdfolio.domain.entity.project.QProject.project;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -32,13 +35,14 @@ public class GatherService {
     private final GatherReplyRepository gatherReplyRepository;
     private final GatherSkillRepository gatherSkillRepository;
 
+
     
     // 모집글 작성
     public void writeGather(WriteRequest writeRequest,Long memberId){
 
         Gather gather = gatherRepository.save(writeRequest.toEntity(memberId));
 
-        List<Skill> skills = Skill.of(writeRequest.gatherSkill());
+        List<Skill> skills = Skill.of(writeRequest.skills());
         List<GatherSkill> gatherSkills = createGatherSkills(gather, skills);
         gatherSkillRepository.saveAll(gatherSkills);
     }
@@ -86,9 +90,12 @@ public class GatherService {
 
     // 모집글 상세 보기
     public GatherDetailResponse detailGather(Long id){
-        Optional<Gather> byId = gatherRepository.findByGather(id);
-        Gather gather = byId.orElseThrow(() ->
-                new RuntimeException("Not Found Gather" + id));
+//        Optional<Gather> byId = gatherRepository.findByGather(id);
+//        Gather gather = byId.orElseThrow(() ->
+//                new RuntimeException("Not Found Gather" + id));
+//        return new GatherDetailResponse(gather);
+
+        Gather gather = gatherRepository.findByIdIncludingUndeletedComments(id);
         return new GatherDetailResponse(gather);
     }
 

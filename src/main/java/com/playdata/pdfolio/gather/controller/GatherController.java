@@ -1,8 +1,8 @@
 package com.playdata.pdfolio.gather.controller;
 
+
+import com.playdata.pdfolio.auth.UserInfo;
 import com.playdata.pdfolio.domain.dto.gather.SearchDto;
-import com.playdata.pdfolio.domain.entity.gather.Gather;
-import com.playdata.pdfolio.domain.entity.gather.GatherCategory;
 import com.playdata.pdfolio.domain.request.gather.WriteCommentRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteReplyRequest;
 import com.playdata.pdfolio.domain.request.gather.WriteRequest;
@@ -12,6 +12,8 @@ import com.playdata.pdfolio.gather.service.GatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,33 +23,39 @@ public class GatherController {
     private final GatherService gatherService;
 
     // 모집글 작성
-    @PostMapping("/{memberId}")
-    public void GatherWrite(@RequestBody WriteRequest writeRequest,
-                            @PathVariable(name = "memberId") Long memberId){
-        gatherService.writeGather(writeRequest,memberId);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void GatherWrite(
+            @AuthenticationPrincipal UserInfo userInfo,
+            @RequestBody WriteRequest writeRequest){
+        gatherService.writeGather(writeRequest, userInfo.getMemberId());
     }
     // 모집글 수정
-    @PutMapping("/{id}/{memberId}")
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public void GatherModify(@PathVariable(name = "id") Long id,
-                             @PathVariable(name = "memberId") Long memberId,
+                             @AuthenticationPrincipal UserInfo userInfo,
                              @RequestBody WriteRequest writeRequest)
     {
-        gatherService.modifyGather(writeRequest, id, memberId);
+        gatherService.modifyGather(writeRequest, id, userInfo.getMemberId());
     }
     // 모집글 삭제
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void GatherDelete(@PathVariable(name = "id") Long id){
         gatherService.deleteGather(id);
     }
 
     // 모집글 상세 보기
     @GetMapping("/detail/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public GatherDetailResponse detailGather(@PathVariable(name = "id") Long id){
        return gatherService.detailGather(id);
     }
 
     // 모집글 전체 보기 / 모집글 제목 , 글 내용 , 카테고리 , 스킬 검색
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Page<GatherResponse> allGather(
             @RequestParam(required = false,defaultValue = "0",name = "page")
             Integer page,
@@ -66,12 +74,13 @@ public class GatherController {
 
 // -----------------------------------------------------------------------------
     // 코멘트 작성
-    @PostMapping("/comment/{memberId}")
+    @PostMapping("/comment")
+    @ResponseStatus(HttpStatus.CREATED)
     public void GatherCommentWrite(
             @RequestBody WriteCommentRequest writeCommentRequest,
-            @PathVariable(name = "memberId") Long memberId
+            @AuthenticationPrincipal UserInfo userInfo
     ){
-        gatherService.writeGatherComment(writeCommentRequest,memberId);
+        gatherService.writeGatherComment(writeCommentRequest,userInfo.getMemberId());
     }
     // 코멘트 수정
     @PutMapping("/comment/{id}")
@@ -83,17 +92,19 @@ public class GatherController {
     }
     // 코멘트 삭제
     @DeleteMapping("/comment/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void GatherCommentDelete(@PathVariable(name = "id") Long id){
         gatherService.deleteGatherComment(id);
     }
 // -----------------------------------------------------------------------------
     // 리플라이 작성
-    @PostMapping("/reply/{memberId}")
+    @PostMapping("/reply")
+    @ResponseStatus(HttpStatus.CREATED)
     public void GatherReplyWrite(
             @RequestBody WriteReplyRequest writeReplyRequest,
-            @PathVariable(name = "memberId") Long memberId
+            @AuthenticationPrincipal UserInfo userInfo
     ){
-        gatherService.writeGatherReply(writeReplyRequest,memberId);
+        gatherService.writeGatherReply(writeReplyRequest,userInfo.getMemberId());
     }
 
     // 리플라이 수정

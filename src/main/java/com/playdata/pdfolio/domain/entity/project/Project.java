@@ -69,8 +69,8 @@ public class Project extends BaseEntity {
     @Builder.Default
     private List<ProjectSkill> skills = new ArrayList<>();
 
-    public Integer getCommentCount() {
-        return this.comments.size();
+    public Long getCommentCount() {
+        return (long) this.comments.size();
     }
 
     public void increaseHeartCount() {
