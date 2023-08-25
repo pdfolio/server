@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/gathers")
+@RequestMapping("/api/v1/gather")
 public class GatherController {
     private final GatherService gatherService;
 
