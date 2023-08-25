@@ -14,7 +14,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Project
     // TODO: 나중에 동적 쿼리 적용
     @Query(value = "select distinct p from Project p " +
             "join fetch p.skills ps " +
-            "join p.comments c " +
             "join p.member m " +
             "where ps.skill in :skillCategory " +
             "order by p.createdAt desc")
@@ -22,7 +21,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Project
 
     @Query(value = "select distinct p from Project p " +
             "join fetch p.skills ps " +
-            "join p.comments c " +
             "join p.member m " +
             "where ps.skill in :skillCategory " +
             "order by p.viewCount desc")
@@ -30,7 +28,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Project
 
     @Query(value = "select distinct p from Project p " +
             "join fetch p.skills ps " +
-            "join p.comments c " +
             "join p.member m " +
             "where ps.skill in :skillCategory " +
             "order by p.heartCount desc")
