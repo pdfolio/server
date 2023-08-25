@@ -94,7 +94,7 @@ public class GatherSearchRepositoryImpl implements GatherSearchRepository{
     private BooleanBuilder skillEqualString(String skills) {
         BooleanBuilder builder = new BooleanBuilder();
         QGatherSkill qGatherSkill = gatherSkill;
-        if(skills==null) return  builder;
+        if(skills==null || skills.isEmpty() ) return  builder;
         String[] split = skills.split(",");
         for (String c : split) {
             builder.or(qGatherSkill.skill.in(Skill.valueOf(c)));
