@@ -23,7 +23,7 @@ public class Gather extends BaseEntity {
 
     private String title;
 
-    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "longtext")
     private String content;
 
     private LocalDate startDate;
