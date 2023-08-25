@@ -19,12 +19,6 @@ public class ProjectSkillResponse {
         this.skillName = skill.getSkillName();
     }
 
-    public static List<ProjectSkillResponse> from(List<Skill> skills) {
-        return skills.stream()
-                .map(ProjectSkillResponse::new)
-                .toList();
-    }
-
     public static ProjectSkillResponse of(ProjectSkill projectSkill) {
         return new ProjectSkillResponse(projectSkill.getSkill());
     }

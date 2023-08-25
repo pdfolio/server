@@ -67,9 +67,12 @@ public class ProjectService {
                 .build();
     }
 
+    @Transactional
     public ProjectDetailResponse findById(final Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(ProjectNotFoundException::new);
+
+        project.increaseViewCount();
 
         return ProjectDetailResponse.of(project);
     }
