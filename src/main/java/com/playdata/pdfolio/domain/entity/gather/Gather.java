@@ -52,6 +52,10 @@ public class Gather extends BaseEntity {
     @OneToMany(mappedBy = "gather", fetch = FetchType.LAZY)
     private List<GatherComment> comments;
 
+    public void increaseViewCount(){
+        this.viewCount++;
+    }
+
     public void increaseHeartCount() {
         this.heartCount++;
     }

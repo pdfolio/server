@@ -93,6 +93,7 @@ public class GatherService {
         Optional<Gather> byId = gatherRepository.findByGather(id);
         Gather gather = byId.orElseThrow(() ->
                 new RuntimeException("Not Found Gather" + id));
+        gather.increaseViewCount();
         return new GatherDetailResponse(gather);
 
 //        Gather gather = gatherRepository.findByIdIncludingUndeletedComments(id);
