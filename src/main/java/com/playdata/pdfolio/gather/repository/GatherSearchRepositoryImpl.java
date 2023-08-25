@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,8 @@ public class GatherSearchRepositoryImpl implements GatherSearchRepository{
                         isDeletedExpression
                         ,(categoryEqual(condition.getCategory()))
                         ,(keywordContains(condition.getKeyword()))
-                        ,skillEqual(gatherIdsWithSkills,condition.getSkills())
+//                        ,skillEqual(gatherSkill.skill,condition.getSkills())
+                        ,skillEqual2(condition.getSkills())
                 )
                 .offset(request.getPageNumber())
                 .limit(request.getPageSize());
@@ -110,7 +112,11 @@ public class GatherSearchRepositoryImpl implements GatherSearchRepository{
                 ? null
                 : gather.id.in(gatherIdsWithSkills);
     }
-
+    private BooleanExpression skillEqual2(String getSkills) {
+        return getSkills == null || getSkills.isEmpty()
+                ? null
+                : gatherSkill.skill.in(Skill.of(Arrays.asList(getSkills.split(","))));
+    }
     private BooleanBuilder skillEqualString(String skills) {
         BooleanBuilder builder = new BooleanBuilder();
         QGatherSkill qGatherSkill = gatherSkill;

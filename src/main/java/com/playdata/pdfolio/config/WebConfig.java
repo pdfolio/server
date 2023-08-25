@@ -23,6 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .allowedOrigins("http://localhost:3000");
+
     }
 
     // @ProjectSearchParams 어노테이션을 사용한 파라미터를 처리할 수 있도록 등록
