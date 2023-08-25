@@ -18,6 +18,8 @@ public class ProjectDetailResponse {
     private Integer heartCount;
     private Integer viewCount;
     private Long commentCount;
+    private String repositoryUrl;
+    private String publishUrl;
     private String thumbnailUrl;
     private String createdAt;
     private List<ProjectSkillResponse> skillStacks;
@@ -34,6 +36,8 @@ public class ProjectDetailResponse {
         this.viewCount = project.getViewCount();
         this.commentCount = project.getCommentCount();
         this.thumbnailUrl = project.getThumbNailUrl().getUrl();
+        this.publishUrl = project.getPublishUrl().getUrl();
+        this.repositoryUrl = project.getRepositoryUrl().getUrl();
         this.createdAt = project.getCreatedAt().toString();
         this.skillStacks = project.getSkills()
                 .stream()
