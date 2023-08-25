@@ -4,11 +4,18 @@ import com.playdata.pdfolio.domain.entity.common.Skill;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
+@Table(
+        indexes = {
+                @Index(name = "idx_project_skill_skill", columnList = "skill")
+        }
+)
 public class ProjectSkill {
 
     @Id

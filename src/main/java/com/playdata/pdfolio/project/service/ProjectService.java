@@ -6,10 +6,16 @@ import com.playdata.pdfolio.domain.entity.project.Project;
 import com.playdata.pdfolio.domain.entity.project.ProjectSkill;
 import com.playdata.pdfolio.domain.entity.project.Url;
 import com.playdata.pdfolio.domain.request.project.ProjectCreateRequest;
+import com.playdata.pdfolio.domain.request.project.ProjectSearchParameter;
 import com.playdata.pdfolio.domain.response.project.ProjectCreateResponse;
+import com.playdata.pdfolio.domain.response.project.ProjectDetailResponse;
+import com.playdata.pdfolio.domain.response.project.ProjectListResponse;
+import com.playdata.pdfolio.domain.response.project.ProjectResponse;
+import com.playdata.pdfolio.project.exception.ProjectNotFoundException;
 import com.playdata.pdfolio.project.repository.ProjectRepository;
 import com.playdata.pdfolio.project.repository.ProjectSkillRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,23 +30,23 @@ public class ProjectService {
     private final ProjectSkillRepository projectSkillRepository;
 
     @Transactional
-    public ProjectCreateResponse save(ProjectCreateRequest request, Long memberId) {
-//        Member member = Member.getMemberProxy(memberId);
-//        Project project = createProject(request, member);
-//        List<Skill> skills = Skill.of(request.getProjectSkills());
-//
-//        Project savedProject = projectRepository.save(project);
-//
-//        List<ProjectSkill> projectSkills = createProjectSkills(savedProject, skills);
-//        projectSkillRepository.saveAll(projectSkills);
+    public ProjectCreateResponse save(final ProjectCreateRequest request, final Long memberId) {
+        Member member = Member.builder()
+                .id(memberId)
+                .build();
 
-//        return ProjectCreateResponse.of(savedProject);
+        Project project = createProject(request, member);
+        List<Skill> skills = Skill.of(request.getProjectSkills());
 
-        return null;
+        Project savedProject = projectRepository.save(project);
+
+        List<ProjectSkill> projectSkills = createProjectSkills(savedProject, skills);
+        projectSkillRepository.saveAll(projectSkills);
+
+        return ProjectCreateResponse.of(savedProject);
     }
 
-
-    private List<ProjectSkill> createProjectSkills(Project project, List<Skill> skills) {
+    private List<ProjectSkill> createProjectSkills(final Project project, final List<Skill> skills) {
         return skills.stream()
                 .map(skill -> ProjectSkill.builder()
                                 .project(project)
@@ -49,7 +55,7 @@ public class ProjectService {
                 .toList();
     }
 
-    private Project createProject(ProjectCreateRequest request, Member member) {
+    private Project createProject(final ProjectCreateRequest request, final Member member) {
         return Project.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -59,5 +65,37 @@ public class ProjectService {
                 .thumbNailUrl(Url.of(request.getThumbNailUrl()))
                 .member(member)
                 .build();
+    }
+
+    public ProjectDetailResponse findById(final Long id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(ProjectNotFoundException::new);
+
+        return ProjectDetailResponse.of(project);
+    }
+
+    public ProjectListResponse search(final ProjectSearchParameter searchParameter) {
+        String sortType = searchParameter.getSortType().getType();
+        Page<Project> projects = null;
+        if (sortType.equals("createdAt")) {
+            projects = projectRepository.searchByConditionOrderByCreatedAt(
+                    searchParameter.getSkillCategory().getSkills(),
+                    searchParameter.getPageable()
+            );
+        } else if (sortType.equals("viewCount")) {
+            projects = projectRepository.searchByConditionOrderByViewCount(
+                    searchParameter.getSkillCategory().getSkills(),
+                    searchParameter.getPageable()
+            );
+        } else if (sortType.equals("heartCount")) {
+            projects = projectRepository.searchByConditionOrderByHeartCount(
+                    searchParameter.getSkillCategory().getSkills(),
+                    searchParameter.getPageable()
+            );
+        }
+
+        Page<ProjectResponse> projectResponses = projects.map(ProjectResponse::new);
+
+        return ProjectListResponse.of(projectResponses);
     }
 }

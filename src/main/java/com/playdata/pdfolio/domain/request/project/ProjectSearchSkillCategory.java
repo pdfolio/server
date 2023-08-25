@@ -1,0 +1,29 @@
+package com.playdata.pdfolio.domain.request.project;
+
+import com.playdata.pdfolio.domain.entity.common.Skill;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.util.Arrays;
+import java.util.List;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class ProjectSearchSkillCategory {
+
+    private List<Skill> skills;
+
+    public static ProjectSearchSkillCategory of(String skillCategory) {
+        List<Skill> skills = Arrays.stream(skillCategory.split(","))
+                .map(String::trim)
+                .map(String::toUpperCase)
+                .map(Skill::valueOf)
+                .toList();
+
+        return new ProjectSearchSkillCategory(skills);
+    }
+
+}
