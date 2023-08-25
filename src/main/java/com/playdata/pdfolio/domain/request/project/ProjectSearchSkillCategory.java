@@ -17,6 +17,10 @@ public class ProjectSearchSkillCategory {
     private List<Skill> skills;
 
     public static ProjectSearchSkillCategory of(String skillCategory) {
+        if (skillCategory == null || skillCategory.isBlank()) {
+            return new ProjectSearchSkillCategory(List.of(Skill.values()));
+        }
+
         List<Skill> skills = Arrays.stream(skillCategory.split(","))
                 .map(String::trim)
                 .map(String::toUpperCase)

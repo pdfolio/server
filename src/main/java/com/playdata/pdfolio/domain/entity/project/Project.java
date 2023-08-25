@@ -79,4 +79,12 @@ public class Project extends BaseEntity {
     public void decreaseHeartCount() {
         this.heartCount--;
     }
+
+    public void increaseViewCount() {
+        this.heartCount++;
+    }
+
+    public void decreaseViewCount() {
+        this.heartCount--;
+    }
 }

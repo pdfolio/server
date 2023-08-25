@@ -21,7 +21,7 @@ public enum ProjectSearchSortType {
     }
 
     public static ProjectSearchSortType of(String value) {
-        if (Objects.isNull(value)) {
+        if (Objects.isNull(value) || value.isBlank()) {
             return CREATED_AT;
         }
 

@@ -9,7 +9,6 @@ import com.playdata.pdfolio.domain.response.project.ProjectListResponse;
 import com.playdata.pdfolio.project.resolver.ProjectSearchParams;
 import com.playdata.pdfolio.project.service.ProjectService;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
