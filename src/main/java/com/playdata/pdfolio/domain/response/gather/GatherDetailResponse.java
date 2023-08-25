@@ -1,6 +1,7 @@
     package com.playdata.pdfolio.domain.response.gather;
 
     import com.playdata.pdfolio.domain.dto.gather.CommentDto;
+    import com.playdata.pdfolio.domain.dto.gather.GatherSkillDto;
     import com.playdata.pdfolio.domain.entity.gather.*;
     import com.playdata.pdfolio.domain.entity.member.Member;
     import lombok.AllArgsConstructor;
@@ -23,15 +24,17 @@
         private LocalDate startDate;
         private LocalDate closeDate;
         private Long teamSize;
-        private GatherCategory category;
+        private String category;
         private String contact;
         private Integer heartCount;
         private Integer viewCount;
         private Boolean isDeleted;
 
-        private Member member;
+        private Long memberId;
+        private String memberName;
+        private String memberImageUrl;
 
-        private Set<GatherSkill> skills;
+        private List<GatherSkillDto> skills;
 
         private List<CommentDto> gatherCommentList;
 //        private List<ReplyDto> gatherReplies;
@@ -43,17 +46,19 @@
             this.startDate = gather.getStartDate();
             this.closeDate = gather.getCloseDate();
             this.teamSize = gather.getTeamSize();
-            this.category = gather.getCategory();
+            this.category = gather.getCategory().name();
             this.contact = gather.getContact();
             this.heartCount = gather.getHeartCount();
             this.viewCount = gather.getViewCount();
-            this.member = gather.getMember();
-//            this.skills = gather.getSkills();
+            this.memberId = gather.getMember().getId();
+            this.memberName = gather.getMember().getNickName();
+            this.memberImageUrl = gather.getMember().getImageUrl();
+            this.skills = gather.getSkills().stream().map(GatherSkillDto::new).toList();
 
             this.gatherCommentList = gather.getComments() != null?
                     gather.getComments()
                             .stream()
-                            .map(gatherComment -> new CommentDto(gatherComment))
+                            .map(CommentDto::new)
                             .toList()
                     :new ArrayList<>();
 

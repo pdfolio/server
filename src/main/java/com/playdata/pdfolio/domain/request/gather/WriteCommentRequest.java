@@ -10,11 +10,11 @@ import jakarta.persistence.*;
 import java.util.List;
 
 public record WriteCommentRequest(
-        Long memberId,
         Long gatherId,
         String content
         ) {
-    public GatherComment toEntity(){
+
+    public GatherComment toEntity(Long memberId){
 
         return GatherComment.builder()
                 .member(Member.builder().id(memberId).build())
