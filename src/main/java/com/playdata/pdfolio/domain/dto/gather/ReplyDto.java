@@ -12,10 +12,12 @@ public class ReplyDto {
     private Long memberId;
     private String nickName;
     private String content;
+    private boolean isDeleted;
     public ReplyDto(GatherReply gatherReply){
         this.id = gatherReply.getId();
         this.memberId = gatherReply.getMember().getId();
         this.nickName = gatherReply.getMember().getNickName();
         this.content = gatherReply.getContent();
+        this.isDeleted = gatherReply.getIsDeleted();
     }
 }

@@ -90,13 +90,13 @@ public class GatherService {
 
     // 모집글 상세 보기
     public GatherDetailResponse detailGather(Long id){
-//        Optional<Gather> byId = gatherRepository.findByGather(id);
-//        Gather gather = byId.orElseThrow(() ->
-//                new RuntimeException("Not Found Gather" + id));
-//        return new GatherDetailResponse(gather);
-
-        Gather gather = gatherRepository.findByIdIncludingUndeletedComments(id);
+        Optional<Gather> byId = gatherRepository.findByGather(id);
+        Gather gather = byId.orElseThrow(() ->
+                new RuntimeException("Not Found Gather" + id));
         return new GatherDetailResponse(gather);
+
+//        Gather gather = gatherRepository.findByIdIncludingUndeletedComments(id);
+//        return new GatherDetailResponse(gather);
     }
 
     // 모집글 전체 보기 / 모집글 제목 , 글 내용 , 카테고리 검색

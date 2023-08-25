@@ -87,8 +87,7 @@ public class GatherSearchRepositoryImpl implements GatherSearchRepository{
                 .leftJoin(gather.comments, gatherComment)
                 .fetchJoin()
                 .where(
-                        gather.id.eq(id),
-                        isCommentDeletedFalse
+                        gather.id.eq(id)
                 )
                 .fetchOne();
     }

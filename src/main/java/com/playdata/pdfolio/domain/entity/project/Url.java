@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 public class Url {
 
-    private static final String URI_PATTERN = "^(https?|ftp)://[A-Za-z0-9+&@#/%?=~_|!:,.;-]*[-A-Za-z0-9+&@#/%=~_|]";
+    private static final String URI_PATTERN = "[A-Za-z0-9+&@#/%?=~_|!:,.;-]*[-A-Za-z0-9+&@#/%=~_|]";
 
     @Column
     @Lob
