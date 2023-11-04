@@ -20,17 +20,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .httpBasic(httpBasic -> httpBasic.disable())
-                .csrf(csrf -> csrf.disable())
-                .formLogin(formLogin -> formLogin.disable())
-                .sessionManagement(sessionManagement->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(sessionManagement-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorizeRequests -> authorizeRequests
-//                                .requestMatchers("/api/v1/oauth2/*").permitAll()
-                                .anyRequest().permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/v1/auth/*").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/oauth2/*").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/project/*").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/gather/*").permitAll()
+                                .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
